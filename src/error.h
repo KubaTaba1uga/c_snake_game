@@ -10,7 +10,8 @@
  *    PUBLIC API
  ******************************************************************************/
 typedef enum {
-  SUCCESS = 0,
+  NO_ERROR = 0,
+  OOM_ERROR,
 
   /* Enum assigns values automatically by incrementing
    *   the first value. `L_ERROR_LEN` stands for number
