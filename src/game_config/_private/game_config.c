@@ -37,6 +37,7 @@ game_config_ptr create_game_config(void) {
 
   if (!local_game_config)
     // TO-DO set errno to OOM error
+    // TO-DO log error
     return NULL;
 
   local_game_config->users_types = NULL;
