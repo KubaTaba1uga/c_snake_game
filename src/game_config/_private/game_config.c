@@ -1,12 +1,15 @@
-#include "../game_config.h"
+/*******************************************************************************
+ *    IMPORTS
+ ******************************************************************************/
+#include <stddef.h>
+
 #include "../../interfaces/std_lib_interface.h"
 #include "../../user/user_type.h"
+#include "../game_config.h"
 #include "../game_difficulty.h"
 #include "../game_size.h"
 #include "../game_type.h"
 #include "_p_game_config.h"
-
-#include "stddef.h"
 
 /*******************************************************************************
  *    DATA
@@ -25,7 +28,7 @@ struct game_config {
 };
 
 /*******************************************************************************
- *    PUBLIC API
+ *    API
  ******************************************************************************/
 game_config_ptr create_game_config(void) {
   game_config_ptr local_game_config;
@@ -36,12 +39,10 @@ game_config_ptr create_game_config(void) {
     // TO-DO set errno to OOM error
     return NULL;
 
+  local_game_config->users_types = NULL;
+
   return local_game_config;
 }
-
-/*******************************************************************************
- *    PRIVATE API
- ******************************************************************************/
 
 void destroy_game_config(game_config_ptr game_config) { app_free(game_config); }
 
