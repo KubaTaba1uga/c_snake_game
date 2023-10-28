@@ -1,7 +1,9 @@
 sources = files(
-   'main.c', 'config.h',
-   'gardener.c', 'gardener.h',
+   'config.h', 'error.h'
 )
+
+subdir('game_config')
+subdir('user')
 
 subdir('utils')
 subdir('interfaces')
