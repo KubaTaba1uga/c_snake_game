@@ -2,6 +2,7 @@
  *    IMPORTS
  ******************************************************************************/
 // Test framework
+#include "_p_game_config.h"
 #include "game_size.h"
 #include "mock_std_lib_interface.h"
 #include <stddef.h>
@@ -132,4 +133,52 @@ void test_get_game_config_users_types(void) {
 
   TEST_ASSERT_EQUAL_MESSAGE(expected_users_types, users_types,
                             "Users types should be {HUMAN}");
+}
+
+void test_set_game_config_type(void) {
+  game_config_ptr game_config;
+
+  game_config = create_game_config();
+
+  set_game_config_type(game_config, LOCAL);
+
+  TEST_ASSERT_EQUAL_MESSAGE(LOCAL, game_config->type,
+                            "Game type should be LOCAL");
+}
+
+void test_set_game_config_difficulty(void) {
+  game_config_ptr game_config;
+
+  game_config = create_game_config();
+
+  set_game_config_difficulty(game_config, EASY);
+
+  TEST_ASSERT_EQUAL_MESSAGE(EASY, game_config->difficulty,
+                            "Game difficulty should be EASY");
+}
+
+void test_set_game_config_size(void) {
+  game_config_ptr game_config;
+
+  game_config = create_game_config();
+
+  set_game_config_size(game_config, SMALL);
+
+  TEST_ASSERT_EQUAL_MESSAGE(SMALL, game_config->size,
+                            "Game size should be SMALL");
+}
+
+void test_set_game_config_users_types(void) {
+  game_config_ptr game_config;
+  user_type_t users_types[] = {HUMAN, HUMAN, HUMAN};
+  size_t users_amount = sizeof(users_types) / sizeof(user_type_t);
+
+  game_config = create_game_config();
+
+  set_game_config_users_types(game_config, users_amount, users_types);
+
+  TEST_ASSERT_EQUAL_MESSAGE(users_types, game_config->users_types,
+                            "Users types should be {HUMAN}");
+  TEST_ASSERT_EQUAL_MESSAGE(users_amount, game_config->users_amount,
+                            "Users amount should be 3");
 }
