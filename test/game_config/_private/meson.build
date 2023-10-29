@@ -6,6 +6,8 @@ user = join_paths(src, 'user')
 game_config = join_paths(src, 'game_config')
 game_config_private = join_paths(game_config, '_private')
 
+test_utils = ['utils.h', 'utils.c']
+
 test_game_config_name = 'test_game_config.c'
 
 test_game_config_src = files([test_game_config_name, 
@@ -14,7 +16,7 @@ test_game_config_src = files([test_game_config_name,
                               game_config / 'game_size.h',
                               game_config / 'game_difficulty.h',
                               game_config_private / 'game_config.c',
-                              ])
+                              ] + test_utils) 
 
 test_game_config_exe = executable('test_game_config',
   sources: [

@@ -10,10 +10,11 @@ inline game_config_ptr create_difficulty(int argc, char *argv[],
 inline game_config_ptr create_size(int argc, char *argv[],
                                    game_config_ptr game_conifg);
 
+game_config_ptr (*const creation_functions[])(int argc, char *argv[],
+                                              game_config_ptr game_conifg) = {
+    create_game_type, create_difficulty, create_size};
+
 game_config_ptr create_game_config_from_cli(int argc, char *argv[]) {
-  game_config_ptr (*const creation_functions[])(int argc, char *argv[],
-                                                game_config_ptr game_conifg) = {
-      create_game_type, create_difficulty, create_size};
   game_config_ptr game_config;
   size_t i;
 
