@@ -19,6 +19,8 @@
 typedef enum {
   HUMAN = 0,
   SIMPLE_PC,
+  LAN_SERVER,
+  LAN_CLIENT,
 
   /* Enum assigns values automatically by incrementing
    *   the first value. `GAME_TYPE_ENUM_LEN` stands for number

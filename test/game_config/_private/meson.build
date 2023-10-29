@@ -3,6 +3,7 @@ src = join_paths(root, 'src')
 
 interfaces = join_paths(src, 'interfaces')
 user = join_paths(src, 'user')
+utils = join_paths(src, 'utils')
 game_config = join_paths(src, 'game_config')
 game_config_private = join_paths(game_config, '_private')
 create_game_config = join_paths(game_config_private, 'create_game_config')
@@ -50,6 +51,8 @@ test_create_game_config_cli_src = files([test_create_game_config_cli_name,
                                          game_config_private / 'game_config.c',
                                          game_config_private / '_p_game_config.h',
                                          create_game_config / '_p_create_game_config_from_cli.c',
+                                         utils / 'logging_utils.c',
+                                         utils / 'logging_utils.h',
                                         ] + test_utils)
 
 test_create_game_config_cli_exe = executable('test_create_game_config_cli',
@@ -60,6 +63,7 @@ test_create_game_config_cli_exe = executable('test_create_game_config_cli',
   ],
   include_directories: [src,
                         user,
+                        utils,
                         interfaces,
                         game_config,
                         game_config_private,

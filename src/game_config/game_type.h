@@ -13,7 +13,8 @@
  ******************************************************************************/
 typedef enum {
   LOCAL = 0,
-  LAN,
+  SERVER,
+  CLIENT,
 
   /* Enum assigns values automatically by incrementing
    *   the first value. `GAME_TYPE_ENUM_LEN` stands for number
