@@ -31,21 +31,7 @@ game_config_ptr game_config_mock = NULL;
 /*******************************************************************************
  *    SETUP, TEARDOWN
  ******************************************************************************/
-void setUp() {
-  create_game_config_mock();
-  /* size_t game_config_size; */
-
-  /* game_config_mock = NULL; */
-
-  /* game_config_size = sizeof(struct game_config); */
-
-  /* game_config_mock = malloc(game_config_size); */
-
-  /* if (!game_config_mock) */
-  /*   TEST_FAIL_MESSAGE("Unable to allocate memory for game config mock."); */
-
-  /* app_malloc_ExpectAndReturn(game_config_size, game_config_mock); */
-}
+void setUp() { create_game_config_mock(); }
 
 void tearDown() { destroy_game_config_mock(); }
 
