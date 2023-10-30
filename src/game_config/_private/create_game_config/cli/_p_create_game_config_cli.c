@@ -13,7 +13,7 @@
 
 // App
 #include "_p_create_game_config_from_cli.h"
-#include "_p_create_size_cli.h"
+/* #include "_p_create_size_cli.h" */
 #include "_p_game_config.h"
 #include "game_difficulty.h"
 #include "game_size.h"
@@ -45,7 +45,8 @@ static struct option getopt_options[] = {
 
 game_config_ptr (*const getopt_options_creation_functions_map[])(
     game_config_ptr game_conifg, char *value) = {
-    create_size_cli,
+    /* create_size_cli, */
+    create_game_type,
 };
 
 char getopt_fmt[255];
