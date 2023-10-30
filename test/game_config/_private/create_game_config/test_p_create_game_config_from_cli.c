@@ -4,10 +4,14 @@
 // App
 #include "_p_create_game_config_from_cli.c"
 #include "_p_game_config.h"
+#include "game_config.h"
+#include "game_difficulty.h"
+#include "game_type.h"
 #include "logging_utils.h"
 
 // Test utils
-#include "utils.h"
+#include "../utils.h"
+#include "mock_std_lib_interface.h"
 
 /*******************************************************************************
  *    DATA
@@ -34,11 +38,15 @@ void tearDown() {
 
 void test_create_game_config_from_cli_success(void) {
   int argc = 3;
-  char *argv[] = {"exec_path", "-d", "aLLkdjakljdlkasjdlk"};
+  char *argv[] = {"exec_path", "-d", "easy"};
 
   game_config_ptr game_config;
+
+  app_free_Ignore();
 
   game_config = create_game_config_from_cli(argc, argv);
 
   TEST_ASSERT_NOT_NULL(game_config);
+
+  TEST_ASSERT_EQUAL(EASY, get_game_config_difficulty(game_config));
 }

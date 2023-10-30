@@ -43,36 +43,4 @@ test_game_config_exe = executable('test_game_config',
 
 test('test_game_config', test_game_config_exe)
 
-
-# Create game config from cli test file
-test_create_game_config_cli_name = 'test_p_create_game_config_from_cli.c'
-
-test_create_game_config_cli_src = files([test_create_game_config_cli_name,
-                                         game_config_private / 'game_config.c',
-                                         game_config_private / '_p_game_config.h',
-                                         create_game_config / '_p_create_game_config_from_cli.c',
-                                         utils / 'logging_utils.c',
-                                         utils / 'logging_utils.h',
-                                        ] + test_utils)
-
-test_create_game_config_cli_exe = executable('test_create_game_config_cli',
-  sources: [
-   test_create_game_config_cli_src,
-   cmock_gen_runner.process(test_create_game_config_cli_name),
-   cmock_gen_mock.process(interfaces / 'std_lib_interface.h'),
-  ],
-  include_directories: [src,
-                        user,
-                        utils,
-                        interfaces,
-                        game_config,
-                        game_config_private,
-                        create_game_config
-                       ],
-  dependencies: test_dependencies,
-  link_args: [
-    # allow static functions testing
-    '-zmuldefs',
-  ]
-)
-test('test_create_game_config_cli', test_create_game_config_cli_exe)
+subdir('create_game_config')

@@ -1,11 +1,4 @@
-#include "_p_create_game_config_from_cli.h"
-#include "../../../interfaces/std_lib_interface.h"
-#include "../../../user/user_type.h"
-#include "../../../utils/logging_utils.h"
-#include "../../game_type.h"
-#include "../_p_game_config.h"
-#include "game_difficulty.h"
-#include "user_type.h"
+// C standard library
 #include <ctype.h>
 #include <getopt.h>
 #include <stdbool.h>
@@ -14,6 +7,15 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+
+#include "../../../../interfaces/std_lib_interface.h"
+#include "../../../../user/user_type.h"
+#include "../../../../utils/logging_utils.h"
+#include "../../../game_type.h"
+#include "../../_p_game_config.h"
+#include "../_p_create_game_config_from_cli.h"
+#include "../game_difficulty.h"
+#include "../user_type.h"
 
 const char FLAGS[] = {
     // Difficulty
