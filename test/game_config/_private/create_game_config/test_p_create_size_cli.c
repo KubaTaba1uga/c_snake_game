@@ -2,11 +2,14 @@
  *    IMPORTS
  ******************************************************************************/
 // Test framework
+#include <stddef.h>
 #include <unity.h>
 
 // App
 #include "game_config/_private/_p_game_config.h"
 #include "game_config/_private/create_game_config/cli/_p_create_size_cli.h"
+#include "game_config/game_difficulty.h"
+#include "game_config/game_size.h"
 #include "utils/logging_utils.h"
 
 // Test utils
@@ -33,12 +36,17 @@ void tearDown() {
 
 void test_create_size_cli_success(void) {
   game_config_ptr game_config = create_game_config();
-  char user_value[] = "small";
+  char *user_value[] = {"small",  "Small", "SMALL", "medium", "meDIUm",
+                        "MEDIUm", "big",   "bIg",   "BIG"};
+  game_size_t expected[] = {SMALL,   SMALL, SMALL, AVARAGE, AVARAGE,
+                            AVARAGE, BIG,   BIG,   BIG};
+  size_t i;
 
-  game_config = create_size_cli(game_config, user_value);
+  for (i = 0; i < sizeof(user_value) / sizeof(char *); i++) {
+    game_config = create_size_cli(game_config, user_value[i]);
 
-  TEST_ASSERT_NOT_NULL(game_config);
+    TEST_ASSERT_NOT_NULL(game_config);
 
-  TEST_ASSERT_EQUAL(SMALL, get_game_config_size(game_config));
-  /* TEST_ASSERT_EQUAL(EASY, get_game_config_difficulty(game_config)); */
+    TEST_ASSERT_EQUAL(expected[i], get_game_config_size(game_config));
+  }
 }
