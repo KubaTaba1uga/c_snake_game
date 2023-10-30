@@ -3,13 +3,14 @@
  ******************************************************************************/
 #include <stddef.h>
 
+// App
+#include "../../interfaces/std_lib_interface.h"
 #include "../../user/user_type.h"
+#include "../game_config.h"
+#include "../game_difficulty.h"
+#include "../game_size.h"
+#include "../game_type.h"
 #include "_p_game_config.h"
-#include "game_config.h"
-#include "game_difficulty.h"
-#include "game_size.h"
-#include "game_type.h"
-#include "std_lib_interface.h"
 
 /*******************************************************************************
  *    DATA

@@ -1,12 +1,13 @@
-#include "_p_create_size_cli.h"
-#include "../../../../utils/str_utils.h"
-#include "_p_game_config.h"
-#include "game_difficulty.h"
-#include "game_size.h"
-#include "std_lib_interface.h"
-/* #include "str_utils.h" */
 #include <stddef.h>
 #include <string.h>
+
+// App
+#include "../../../../interfaces/std_lib_interface.h"
+#include "../../../../utils/str_utils.h"
+#include "../../../game_difficulty.h"
+#include "../../../game_size.h"
+#include "../../_p_game_config.h"
+#include "_p_create_size_cli.h"
 
 const char *valid_user_values[] = {"small", "medium", "big"};
 const game_size_t user_values_game_size_map[] = {SMALL, AVARAGE, BIG};
