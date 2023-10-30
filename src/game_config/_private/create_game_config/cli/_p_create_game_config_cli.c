@@ -14,11 +14,12 @@
 // App
 #include "../../../../interfaces/std_lib_interface.h"
 #include "../../../../user/user_type.h"
-#include "_p_game_config.h"
-#include "game_difficulty.h"
-#include "game_size.h"
-#include "game_type.h"
-#include "logging_utils.h"
+#include "../../../../utils/logging_utils.h"
+#include "../../../game_difficulty.h"
+#include "../../../game_size.h"
+#include "../../../game_type.h"
+#include "../../_p_game_config.h"
+#include "_p_create_game_config_cli.h"
 
 /*******************************************************************************
  *    PRIVATE DECLARATIONS

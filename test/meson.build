@@ -29,7 +29,7 @@ cmock_gen_mock = generator(
    arguments: ['@INPUT@', '@BUILD_DIR@'],
 )
 
-# Required by generators
+# Required by std_lib_mock
 _interfaces = join_paths(_src, 'interfaces')
 _interfaces_dir = include_directories(_interfaces)
 app_src_dirs += [_interfaces_dir]

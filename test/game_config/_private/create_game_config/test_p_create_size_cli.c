@@ -5,9 +5,9 @@
 #include <unity.h>
 
 // App
-#include "_p_create_size_cli.h"
-#include "_p_game_config.h"
-#include "logging_utils.h"
+#include "game_config/_private/_p_game_config.h"
+#include "game_config/_private/create_game_config/cli/_p_create_size_cli.h"
+#include "utils/logging_utils.h"
 
 // Test utils
 #include "../utils.h"

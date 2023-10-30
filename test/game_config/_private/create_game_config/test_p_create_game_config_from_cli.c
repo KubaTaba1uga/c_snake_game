@@ -3,7 +3,7 @@
 
 // App
 #include "game_config/_private/_p_game_config.h"
-#include "game_config/_private/create_game_config/_p_create_game_config_from_cli.h"
+#include "game_config/_private/create_game_config/cli/_p_create_game_config_cli.h"
 #include "game_config/game_config.h"
 #include "game_config/game_difficulty.h"
 #include "game_config/game_type.h"
