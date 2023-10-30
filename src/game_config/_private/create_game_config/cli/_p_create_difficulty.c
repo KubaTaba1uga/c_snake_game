@@ -16,7 +16,6 @@
 #include "../../_p_game_config.h"
 #include "../_p_create_game_config_from_cli.h"
 #include "../game_difficulty.h"
-#include "../user_type.h"
 
 const char *valid_user_values[] = {"easy", "medium", "hard"};
 const game_difficulty_t user_values_difficulty_map[] = {EASY, MEDIUM, HARD};

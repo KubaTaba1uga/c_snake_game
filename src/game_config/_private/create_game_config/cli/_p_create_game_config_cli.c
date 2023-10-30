@@ -12,15 +12,14 @@
 #include <unistd.h>
 
 // App
-#include "_p_create_game_config_from_cli.h"
 /* #include "_p_create_size_cli.h" */
+#include "../../../../user/user_type.h"
 #include "_p_game_config.h"
 #include "game_difficulty.h"
 #include "game_size.h"
 #include "game_type.h"
 #include "logging_utils.h"
 #include "std_lib_interface.h"
-#include "user_type.h"
 
 /*******************************************************************************
  *    PRIVATE DECLARATIONS
