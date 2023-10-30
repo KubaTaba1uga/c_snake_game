@@ -45,8 +45,9 @@ static struct option getopt_options[] = {
 
 game_config_ptr (*const getopt_options_creation_functions_map[])(
     game_config_ptr game_conifg, char *value) = {
-    create_size,
+    create_size_cli,
 };
+
 char getopt_fmt[255];
 
 /*******************************************************************************
