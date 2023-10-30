@@ -9,7 +9,7 @@
 #include <unity.h>
 
 // App
-#include "game_config.c"
+#include "game_config/_private/game_config.c"
 
 // Test utils
 #include "utils.h"

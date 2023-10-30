@@ -2,13 +2,13 @@
 #include <unity.h>
 
 // App
-#include "_p_create_game_config_cli.c"
-#include "_p_game_config.h"
-#include "game_config.h"
-#include "game_difficulty.h"
-#include "game_type.h"
-#include "logging_utils.h"
-#include "str_utils.h"
+#include "game_config/_private/_p_game_config.h"
+#include "game_config/_private/create_game_config/_p_create_game_config_from_cli.h"
+#include "game_config/game_config.h"
+#include "game_config/game_difficulty.h"
+#include "game_config/game_type.h"
+#include "utils/logging_utils.h"
+#include "utils/str_utils.h"
 
 // Test utils
 #include "../utils.h"

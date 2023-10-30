@@ -1,14 +1,15 @@
-/*******************************************************************************
- *    DATA
- ******************************************************************************/
-
-#include "game_config/game_config.h"
-
-extern game_config_ptr game_config_mock;
+#ifndef _p_create_game_config_cli_h
+#define _p_create_game_config_cli_h
 
 /*******************************************************************************
- *    API
+ *    IMPORTS
  ******************************************************************************/
 
-void create_game_config_mock(void);
-void destroy_game_config_mock(void);
+#include "game_config.h"
+
+/*******************************************************************************
+ *    PUBLIC API
+ ******************************************************************************/
+game_config_ptr create_game_config_from_cli(int argc, char *argv[]);
+
+#endif
