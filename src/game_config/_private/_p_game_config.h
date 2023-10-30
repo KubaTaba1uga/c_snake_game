@@ -22,6 +22,7 @@
  ******************************************************************************/
 game_config_ptr create_game_config(void);
 void destroy_game_config(game_config_ptr game_config);
+
 void set_game_config_type(game_config_ptr game_config, game_type_t game_type);
 void set_game_config_difficulty(game_config_ptr game_config,
                                 game_difficulty_t game_difficulty);

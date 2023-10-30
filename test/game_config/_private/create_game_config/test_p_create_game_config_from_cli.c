@@ -2,12 +2,13 @@
 #include <unity.h>
 
 // App
-#include "_p_create_game_config_from_cli.c"
+#include "_p_create_game_config_cli.c"
 #include "_p_game_config.h"
 #include "game_config.h"
 #include "game_difficulty.h"
 #include "game_type.h"
 #include "logging_utils.h"
+#include "str_utils.h"
 
 // Test utils
 #include "../utils.h"
@@ -38,7 +39,7 @@ void tearDown() {
 
 void test_create_game_config_from_cli_success(void) {
   int argc = 3;
-  char *argv[] = {"exec_path", "-d", "easy"};
+  char *argv[] = {"exec_path", "-s", "small"};
 
   game_config_ptr game_config;
 
@@ -48,5 +49,6 @@ void test_create_game_config_from_cli_success(void) {
 
   TEST_ASSERT_NOT_NULL(game_config);
 
-  TEST_ASSERT_EQUAL(EASY, get_game_config_difficulty(game_config));
+  TEST_ASSERT_EQUAL(SMALL, get_game_config_size(game_config));
+  /* TEST_ASSERT_EQUAL(EASY, get_game_config_difficulty(game_config)); */
 }
