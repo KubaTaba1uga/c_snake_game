@@ -12,15 +12,15 @@
 #include <unistd.h>
 
 // App
-#include "../../../../interfaces/std_lib_interface.h"
-#include "../../../../user/user_type.h"
-#include "../../../../utils/logging_utils.h"
-#include "../../../game_type.h"
-#include "../../_p_game_config.h"
-#include "../_p_create_game_config_from_cli.h"
-#include "../game_difficulty.h"
-#include "game_config.h"
+#include "_p_create_game_config_from_cli.h"
+#include "_p_create_size_cli.h"
+#include "_p_game_config.h"
+#include "game_difficulty.h"
 #include "game_size.h"
+#include "game_type.h"
+#include "logging_utils.h"
+#include "std_lib_interface.h"
+#include "user_type.h"
 
 /*******************************************************************************
  *    PRIVATE DECLARATIONS
@@ -32,8 +32,6 @@ inline void init_getopt_fmt(void);
 
 inline game_config_ptr create_game_type(game_config_ptr game_conifg,
                                         char *value);
-
-inline game_config_ptr create_size(game_config_ptr game_config, char *value);
 
 /*******************************************************************************
  *    DATA
@@ -121,17 +119,4 @@ game_config_ptr create_game_type(game_config_ptr game_conifg, char *value) {
   set_game_config_type(game_conifg, LOCAL);
 
   return game_conifg;
-}
-
-game_config_ptr create_size(game_config_ptr game_config, char *value) {
-  if (!value) {
-    // set ERRNO
-    // log message
-    return NULL;
-  }
-  game_size_t game_size = SMALL;
-
-  set_game_config_size(game_config, game_size);
-
-  return game_config;
 }

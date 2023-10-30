@@ -14,10 +14,13 @@ test_utils = [join_paths('..', 'utils.h'), join_paths('..', 'utils.c')]
 test_create_game_config_cli_name = 'test_p_create_game_config_from_cli.c'
 
 test_create_game_config_cli_src = files([test_create_game_config_cli_name,
+                                         create_game_config_cli / '_p_create_size_cli.c',
+                                         create_game_config_cli / '_p_create_size_cli.h',
                                          create_game_config_cli / '_p_create_game_config_cli.c',
 #                                         create_game_config_cli / '_p_create_game_config_cli.h',                                         
                                          game_config_private / 'game_config.c',
                                          game_config_private / '_p_game_config.h',
+                                         
 #                                         user / 'user_type.h',
                                          utils / 'logging_utils.c',
                                          utils / 'logging_utils.h',
