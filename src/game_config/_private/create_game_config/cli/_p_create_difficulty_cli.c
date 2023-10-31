@@ -43,8 +43,6 @@ game_config_ptr create_difficulty_cli(game_config_ptr game_config,
   game_config_ptr local_game_config;
   errno = 0;
 
-  puts("WORKING");
-
   local_game_config = _create_difficulty_cli(game_config, value);
 
   if (!local_game_config) {

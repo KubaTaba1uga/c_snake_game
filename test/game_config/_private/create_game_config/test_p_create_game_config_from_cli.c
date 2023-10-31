@@ -38,46 +38,41 @@ void tearDown() {
  ******************************************************************************/
 
 void test_create_game_config_cli_size_success(void) {
-  int argc = 5;
+  char *argv[] = {"exec_path", "-s", "big"};
+  int argc = sizeof(argv) / sizeof(char *);
+
+  game_config_ptr game_config;
+
+  game_config = create_game_config_from_cli(argc, argv);
+
+  TEST_ASSERT_NOT_NULL(game_config);
+
+  TEST_ASSERT_EQUAL(BIG, get_game_config_size(game_config));
+}
+
+void test_create_game_config_cli_difficulty_success(void) {
+  char *argv[] = {"exec_path", "-d", "hard"};
+  int argc = sizeof(argv) / sizeof(char *);
+
+  game_config_ptr game_config;
+
+  game_config = create_game_config_from_cli(argc, argv);
+
+  TEST_ASSERT_NOT_NULL(game_config);
+
+  TEST_ASSERT_EQUAL(HARD, get_game_config_difficulty(game_config));
+}
+
+void test_create_game_config_cli_success(void) {
   char *argv[] = {"exec_path", "-s", "big", "-d", "hard"};
+  int argc = sizeof(argv) / sizeof(char *);
 
   game_config_ptr game_config;
-
-  /* app_free_Ignore(); */
 
   game_config = create_game_config_from_cli(argc, argv);
 
   TEST_ASSERT_NOT_NULL(game_config);
 
   TEST_ASSERT_EQUAL(BIG, get_game_config_size(game_config));
+  TEST_ASSERT_EQUAL(HARD, get_game_config_difficulty(game_config));
 }
-
-void test_create_game_config_cli_size_success_2(void) {
-  int argc = 5;
-  char *argv[] = {"exec_path ", "-s", "big", "-d", "hard"};
-
-  game_config_ptr game_config;
-
-  app_free_Ignore();
-
-  game_config = create_game_config_from_cli(argc, argv);
-
-  TEST_ASSERT_NOT_NULL(game_config);
-
-  TEST_ASSERT_EQUAL(BIG, get_game_config_size(game_config));
-}
-
-/* void test_create_game_config_cli_difficulty_success(void) { */
-/*   int argc = 3; */
-/*   char *argv_[] = {"exec_path", "-s", "big"}; */
-
-/*   game_config_ptr game_config; */
-
-/*   app_free_Ignore(); */
-
-/*   game_config = create_game_config_from_cli(argc, argv_); */
-
-/*   TEST_ASSERT_NOT_NULL(game_config); */
-
-/*   TEST_ASSERT_EQUAL(HARD, get_game_config_difficulty(game_config)); */
-/* } */
