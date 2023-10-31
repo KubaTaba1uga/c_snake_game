@@ -21,10 +21,10 @@
 /*******************************************************************************
  *    DATA
  ******************************************************************************/
-const char *valid_user_values[] = {"small", "medium", "big"};
-const game_size_t user_values_game_size_map[] = {SMALL, AVARAGE, BIG};
-const char file_id[] = "create_size_cli";
-const game_size_t default_size = SMALL;
+static const char *valid_user_values[] = {"small", "medium", "big"};
+static const game_size_t user_values_game_size_map[] = {SMALL, AVARAGE, BIG};
+static const char file_id[] = "create_size_cli";
+static const game_size_t default_size = SMALL;
 
 /*******************************************************************************
  *    PRIVATE DECLARATIONS

@@ -1,13 +1,14 @@
+/*******************************************************************************
+ *    IMPORTS
+ ******************************************************************************/
 // C standard library
-#include <ctype.h>
-#include <getopt.h>
-#include <stdbool.h>
+#include <errno.h>
 #include <stddef.h>
 #include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
-#include <unistd.h>
 
+// App
+#include "../../../../error.h"
 #include "../../../../interfaces/std_lib_interface.h"
 #include "../../../../user/user_type.h"
 #include "../../../../utils/logging_utils.h"
@@ -17,57 +18,106 @@
 #include "../_p_create_game_config_from_cli.h"
 #include "../game_difficulty.h"
 
-const char *valid_user_values[] = {"easy", "medium", "hard"};
-const game_difficulty_t user_values_difficulty_map[] = {EASY, MEDIUM, HARD};
+/*******************************************************************************
+ *    DATA
+ ******************************************************************************/
+static const char *valid_user_values[] = {"easy", "medium", "hard"};
+static const game_difficulty_t user_values_difficulty_map[] = {EASY, MEDIUM,
+                                                               HARD};
+static const char file_id[] = "create_difficulty_cli";
+static const game_difficulty_t default_difficulty = EASY;
 
-game_difficulty_t create_difficulty(char *user_value) {
+/*******************************************************************************
+ *    PRIVATE DECLARATIONS
+ ******************************************************************************/
+inline game_config_ptr _create_difficulty_cli(game_config_ptr game_config,
+                                              char *value);
+inline game_difficulty_t
+convert_user_input_to_game_difficulty_t(char *user_input);
 
-  game_difficulty_t user_difficulty;
-  char *user_value_cp;
-  size_t i;
+/*******************************************************************************
+ *    PUBLIC API
+ ******************************************************************************/
+game_config_ptr create_difficulty_cli(game_config_ptr game_config,
+                                      char *value) {
+  game_config_ptr local_game_config;
+  errno = 0;
 
-  if (!user_value) {
-    goto DEFAULT;
-  }
+  local_game_config = _create_difficulty_cli(game_config, value);
 
-  // Lowerize
-  user_value_cp = malloc(sizeof(char) * (strlen(user_value) + 1));
+  if (!local_game_config) {
+    switch (errno) {
 
-  if (!user_value_cp) {
-    // TO-DO set errno to OOM
-    // TO-DO log error
-    goto ERROR;
-  }
+    case ERROR_NULL_POINTER:
+      log_error((char *)file_id, "`value` cannot be `NULL`");
+      break;
 
-  strncpy(user_value_cp, user_value, strlen(user_value) + 1);
+    case ERROR_GENERIC:
+      log_warning(
+          (char *)file_id,
+          "Cannot create game difficulty based on CLI value `%s`. Setting "
+          "default value",
+          value);
 
-  user_value = lower_str(user_value_cp);
-
-  // Map user input to game_config_type_t
-  user_difficulty = -1;
-
-  for (i = 0;
-       i < sizeof(user_values_difficulty_map) / sizeof(game_difficulty_t);
-       i++) {
-
-    if (!strcmp(valid_user_values[i], user_value)) {
-      user_difficulty = user_values_difficulty_map[i];
+      set_game_config_difficulty(game_config, default_difficulty);
+      local_game_config = game_config;
+      break;
     }
   }
 
-  if (user_difficulty == -1) {
-    // TO-DO set errno to CGC NO DIFFICULTY VALUE
-    // TO-DO log error
+  return local_game_config;
+}
+
+/*******************************************************************************
+ *    PRIVATE API
+ ******************************************************************************/
+game_config_ptr _create_difficulty_cli(game_config_ptr game_config,
+                                       char *value) {
+  game_difficulty_t game_difficulty;
+
+  if (!value) {
+    errno = ERROR_NULL_POINTER;
+    return NULL;
+  }
+
+  game_difficulty =
+      (game_difficulty_t)convert_user_input_to_game_difficulty_t(value);
+
+  if (game_difficulty == -1) {
+    errno = ERROR_GENERIC;
+    return NULL;
+  }
+
+  set_game_config_difficulty(game_config, game_difficulty);
+
+  return game_config;
+}
+
+game_difficulty_t convert_user_input_to_game_difficulty_t(char *user_input) {
+  const size_t buffer_size = 255;
+  char local_buffer[buffer_size];
+  size_t i;
+  void *no_err;
+
+  // Cut str
+  if (strlen(user_input) > buffer_size)
+    user_input = cut_str(user_input, buffer_size - 1);
+
+  no_err = strcpy(local_buffer, user_input);
+  if (!no_err) {
     goto ERROR;
   }
 
-  app_free(user_value);
+  lower_str(local_buffer);
 
-  return user_difficulty;
+  for (i = 0; i < sizeof(valid_user_values) / sizeof(char *); i++) {
+
+    if (!(are_strs_eq((char *)valid_user_values[i], local_buffer)))
+      continue;
+
+    return user_values_difficulty_map[i];
+  }
 
 ERROR:
   return -1;
-
-DEFAULT:
-  return EASY;
 }
