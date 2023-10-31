@@ -12,10 +12,10 @@
 #include <stddef.h>
 
 #include "../../user/user_type.h"
+#include "../game_config.h"
 #include "../game_difficulty.h"
 #include "../game_size.h"
 #include "../game_type.h"
-#include "game_config.h"
 
 /*******************************************************************************
  *    PRIVATE API

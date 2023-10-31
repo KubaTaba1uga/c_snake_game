@@ -2,6 +2,7 @@ game_config_sources = files(['game_config.h',
                            'game_type.h',
                            'game_size.h', 
                            'game_difficulty.h',
+                           'create_game_config.h'
                           ])
 game_config_sources += global_sources
 
