@@ -43,6 +43,8 @@ game_config_ptr create_difficulty_cli(game_config_ptr game_config,
   game_config_ptr local_game_config;
   errno = 0;
 
+  puts("WORKING");
+
   local_game_config = _create_difficulty_cli(game_config, value);
 
   if (!local_game_config) {
@@ -99,7 +101,6 @@ game_difficulty_t convert_user_input_to_game_difficulty_t(char *user_input) {
   size_t i;
   void *no_err;
 
-  // Cut str
   if (strlen(user_input) > buffer_size)
     user_input = cut_str(user_input, buffer_size - 1);
 

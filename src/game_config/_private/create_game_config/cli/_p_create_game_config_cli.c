@@ -19,6 +19,7 @@
 #include "../../../game_size.h"
 #include "../../../game_type.h"
 #include "../../_p_game_config.h"
+#include "_p_create_difficulty_cli.h"
 #include "_p_create_game_config_cli.h"
 #include "_p_create_size_cli.h"
 
@@ -38,16 +39,14 @@ inline game_config_ptr create_game_type(game_config_ptr game_conifg,
  ******************************************************************************/
 static struct option getopt_options[] = {
     {"size", required_argument, 0, 's'},
-    //    {"difficulty", required_argument, 0, 'd'},
-
+    {"difficulty", required_argument, 0, 'd'},
     {"game_type", required_argument, 0, 'g'},
-    {0, 0, 0, 0}};
+    /* {0, 0, 0, 0} */};
 
 game_config_ptr (*const getopt_options_creation_functions_map[])(
     game_config_ptr game_conifg, char *value) = {
-    create_size_cli,
-    create_game_type,
-    NULL,
+    create_size_cli, create_difficulty_cli, create_game_type,
+    /* NULL, */
 };
 
 char getopt_fmt[255];
@@ -73,10 +72,22 @@ game_config_ptr create_game_config_from_cli(int argc, char *argv[]) {
   init_getopt_fmt();
 
   while (true) {
-    int getopt_option_i = 0;
+    int getopt_option_i = -1;
 
     getopt_flag =
-        getopt_long(argc, argv, getopt_fmt, getopt_options, &getopt_option_i);
+        getopt_long(argc, argv, "s:d:", getopt_options, &getopt_option_i);
+
+    printf("option i: %i \n", getopt_option_i);
+    printf("flag: %c \n", getopt_flag);
+
+    printf("with arg %s\n\n", optarg);
+    /* if (getopt_option_i == -1) */
+    /*   break; */
+
+    /* printf("option %s\n", getopt_options[getopt_option_i].name); */
+    /* printf("with arg %s\n\n", optarg); */
+    /* puts("WORKING"); */
+    /* printf("%s\n", getopt_fmt); */
 
     /* Detect the end of the options. */
     if (getopt_flag == -1)
@@ -108,7 +119,8 @@ game_config_ptr (*get_creation_function(int getopt_option_i))(
 }
 
 void init_getopt_fmt(void) {
-  const char local_fmt[] = {getopt_options[0].val, ':',
+  const char local_fmt[] = {getopt_options[0].val, ':', getopt_options[1].val,
+                            ':',
                             // NULL ending a string. Do not remove.
                             0};
   size_t i;
