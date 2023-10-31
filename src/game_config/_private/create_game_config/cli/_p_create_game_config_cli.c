@@ -26,10 +26,11 @@
 /*******************************************************************************
  *    PRIVATE DECLARATIONS
  ******************************************************************************/
+/* inline int get_option_i(char c); */
 inline game_config_ptr (*get_creation_function(int getopt_option_i))(
     game_config_ptr game_config, char *value);
 
-inline void init_getopt_fmt(void);
+/* inline void init_getopt_fmt(void); */
 
 inline game_config_ptr create_game_type(game_config_ptr game_conifg,
                                         char *value);
@@ -37,16 +38,18 @@ inline game_config_ptr create_game_type(game_config_ptr game_conifg,
 /*******************************************************************************
  *    DATA
  ******************************************************************************/
-static struct option getopt_options[] = {
-    {"size", required_argument, 0, 's'},
-    {"difficulty", required_argument, 0, 'd'},
-    {"game_type", required_argument, 0, 'g'},
-    /* {0, 0, 0, 0} */};
+struct option getopt_options[] = {{"size", required_argument, 0, 's'},
+                                  {"difficulty", required_argument, 0, 'd'},
+                                  {"game_type", required_argument, 0, 'g'},
+                                  {"add", no_argument, 0, 'a'},
+                                  {0, 0, 0, 0}};
 
 game_config_ptr (*const getopt_options_creation_functions_map[])(
     game_config_ptr game_conifg, char *value) = {
-    create_size_cli, create_difficulty_cli, create_game_type,
-    /* NULL, */
+    create_size_cli,
+    create_difficulty_cli,
+    create_game_type,
+    NULL,
 };
 
 char getopt_fmt[255];
@@ -59,7 +62,10 @@ game_config_ptr create_game_config_from_cli(int argc, char *argv[]) {
   game_config_ptr (*creation_function)(game_config_ptr game_config,
                                        char *value);
   game_config_ptr game_config;
-  int getopt_flag;
+  int getopt_flag, option_i;
+
+  optind = 1;
+  printf("start optind: %i\n", optind);
 
   game_config = create_game_config();
 
@@ -69,31 +75,30 @@ game_config_ptr create_game_config_from_cli(int argc, char *argv[]) {
     return NULL;
   }
 
-  init_getopt_fmt();
+  /* init_getopt_fmt(); */
 
   while (true) {
-    int getopt_option_i = -1;
+    int x = 0;
 
-    getopt_flag =
-        getopt_long(argc, argv, "s:d:", getopt_options, &getopt_option_i);
+    getopt_flag = getopt_long(argc, argv, "s:d:", getopt_options, &x);
 
-    printf("option i: %i \n", getopt_option_i);
-    printf("flag: %c \n", getopt_flag);
+    printf("c: %c\n", getopt_flag);
+    printf("optind: %i\n", optind);
 
-    printf("with arg %s\n\n", optarg);
-    /* if (getopt_option_i == -1) */
-    /*   break; */
+    option_i = 0;
 
-    /* printf("option %s\n", getopt_options[getopt_option_i].name); */
-    /* printf("with arg %s\n\n", optarg); */
-    /* puts("WORKING"); */
-    /* printf("%s\n", getopt_fmt); */
+    if (option_i < 0) {
+      // TO-DO set errno to unknown option
+      // TO-DO log messgae
+      // TO-DO print to stdout
+      return NULL;
+    }
 
     /* Detect the end of the options. */
     if (getopt_flag == -1)
       break;
 
-    creation_function = get_creation_function(getopt_option_i);
+    creation_function = get_creation_function(option_i);
 
     if (!creation_function) {
       // TO-DO set errno to unknown option
@@ -111,6 +116,14 @@ game_config_ptr create_game_config_from_cli(int argc, char *argv[]) {
 /*******************************************************************************
  *    PRIVATE API
  ******************************************************************************/
+/* int get_option_i(char c) { */
+/*   size_t i; */
+/*   for (i = 0; i < sizeof(getopt_options) / sizeof(struct option); i++) { */
+/*     if (getopt_options[i].val == c) */
+/*       return i; */
+/*   } */
+/*   return -1; */
+/* } */
 
 game_config_ptr (*get_creation_function(int getopt_option_i))(
     game_config_ptr game_config, char *value) {
@@ -118,17 +131,18 @@ game_config_ptr (*get_creation_function(int getopt_option_i))(
   return getopt_options_creation_functions_map[getopt_option_i];
 }
 
-void init_getopt_fmt(void) {
-  const char local_fmt[] = {getopt_options[0].val, ':', getopt_options[1].val,
-                            ':',
-                            // NULL ending a string. Do not remove.
-                            0};
-  size_t i;
+/* void init_getopt_fmt(void) { */
+/*   const char local_fmt[] = {getopt_options[0].val, ':',
+ * getopt_options[1].val, */
+/*                             ':', */
+/*                             // NULL ending a string. Do not remove. */
+/*                             0}; */
+/*   size_t i; */
 
-  for (i = 0; i < sizeof(local_fmt) / sizeof(char); i++) {
-    getopt_fmt[i] = local_fmt[i];
-  }
-}
+/*   for (i = 0; i < sizeof(local_fmt) / sizeof(char); i++) { */
+/*     getopt_fmt[i] = local_fmt[i]; */
+/*   } */
+/* } */
 
 game_config_ptr create_game_type(game_config_ptr game_conifg, char *value) {
   set_game_config_type(game_conifg, LOCAL);
