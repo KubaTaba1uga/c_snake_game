@@ -11,6 +11,7 @@
 // App's data
 #include "../config.h"
 #include "../interfaces/std_lib_interface.h"
+#include "stumpless/severity.h"
 /*******************************************************************************
  *    MACROS
  ******************************************************************************/
@@ -56,6 +57,22 @@ void log_info(char *msg_id, char *fmt, ...) {
   GET_VA_CHAR_ARGS(local_log_entry, sizeof(local_log_entry));
 
   log_msg(local_log_entry, msg_id, STUMPLESS_SEVERITY_INFO);
+}
+
+void log_error(char *msg_id, char *fmt, ...) {
+  char local_log_entry[255];
+
+  GET_VA_CHAR_ARGS(local_log_entry, sizeof(local_log_entry));
+
+  log_msg(local_log_entry, msg_id, STUMPLESS_SEVERITY_ERR);
+}
+
+void log_warning(char *msg_id, char *fmt, ...) {
+  char local_log_entry[255];
+
+  GET_VA_CHAR_ARGS(local_log_entry, sizeof(local_log_entry));
+
+  log_msg(local_log_entry, msg_id, STUMPLESS_SEVERITY_WARNING);
 }
 
 /*******************************************************************************

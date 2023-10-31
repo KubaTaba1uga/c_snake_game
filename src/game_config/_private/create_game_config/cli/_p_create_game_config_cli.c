@@ -47,6 +47,7 @@ game_config_ptr (*const getopt_options_creation_functions_map[])(
     game_config_ptr game_conifg, char *value) = {
     create_size_cli,
     create_game_type,
+    NULL,
 };
 
 char getopt_fmt[255];

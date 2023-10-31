@@ -11,10 +11,13 @@
  ******************************************************************************/
 typedef enum {
   NO_ERROR = 0,
-  OOM_ERROR,
+  ERROR_OOM,
+  ERROR_NULL_POINTER,
+  ERROR_INVALID_ARGS,
+  ERROR_GENERIC,
 
   /* Enum assigns values automatically by incrementing
-   *   the first value. `L_ERROR_LEN` stands for number
+   *   the first value. `ERROR_ENUM_LEN` stands for number
    *   of elements in enum (aka `length`).
    */
   ERROR_ENUM_LEN,

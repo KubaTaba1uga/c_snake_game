@@ -1,4 +1,4 @@
-sources = files(
+global_sources = files(
    'config.h', 'error.h'
 )
 

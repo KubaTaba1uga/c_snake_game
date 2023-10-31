@@ -35,11 +35,12 @@ void tearDown() {
 }
 
 void test_create_size_cli_success(void) {
-  game_config_ptr game_config = create_game_config();
   char *user_value[] = {"small",  "Small", "SMALL", "medium", "meDIUm",
                         "MEDIUm", "big",   "bIg",   "BIG"};
   game_size_t expected[] = {SMALL,   SMALL, SMALL, AVARAGE, AVARAGE,
                             AVARAGE, BIG,   BIG,   BIG};
+
+  game_config_ptr game_config = create_game_config();
   size_t i;
 
   for (i = 0; i < sizeof(user_value) / sizeof(char *); i++) {
@@ -49,4 +50,21 @@ void test_create_size_cli_success(void) {
 
     TEST_ASSERT_EQUAL(expected[i], get_game_config_size(game_config));
   }
+}
+
+void test_create_size_cli_no_value(void) {
+  game_config_ptr game_config = create_game_config();
+
+  game_config = create_size_cli(game_config, NULL);
+
+  TEST_ASSERT_NULL(game_config);
+}
+
+void test_create_size_cli_wrong_value(void) {
+  game_config_ptr game_config = create_game_config();
+
+  game_config = create_size_cli(game_config, "whatever");
+
+  TEST_ASSERT_NOT_NULL(game_config);
+  TEST_ASSERT_EQUAL(SMALL, get_game_config_size(game_config));
 }
