@@ -3,10 +3,8 @@
 ##################################
 test_utils = [join_paths('..', 'utils.h'), join_paths('..', 'utils.c')]
 
-
-
 ##################################
-# TEST CREATE GAME CONFIG
+# TEST CREATE GAME CONFIG CLI
 ##################################
 test_create_game_config_cli_name = 'test_p_create_game_config_from_cli.c'
 
@@ -32,7 +30,7 @@ test_create_game_config_cli_exe = executable('test_create_game_config_cli',
 test('test_create_game_config_cli', test_create_game_config_cli_exe)
 
 ##################################
-# TEST CREATE SIZE
+# TEST CREATE SIZE CLI
 ##################################
 test_create_size_cli_name = 'test_p_create_size_cli.c'
 

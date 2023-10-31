@@ -11,13 +11,13 @@
 #include <unity.h>
 
 // App
-#include "_p_game_config.h"
-#include "game_config.c"
-#include "game_config.h"
-#include "game_difficulty.h"
-#include "game_size.h"
-#include "game_type.h"
-#include "user_type.h"
+#include "game_config/_private/_p_game_config.h"
+#include "game_config/_private/game_config.c"
+#include "game_config/game_config.h"
+#include "game_config/game_difficulty.h"
+#include "game_config/game_size.h"
+#include "game_config/game_type.h"
+#include "user/user_type.h"
 
 // Test utils
 #include "utils.h"

@@ -1,39 +1,27 @@
-root = join_paths('..', '..', '..')
-src = join_paths(root, 'src')
-
-interfaces = join_paths(src, 'interfaces')
-user = join_paths(src, 'user')
-utils = join_paths(src, 'utils')
-game_config = join_paths(src, 'game_config')
-game_config_private = join_paths(game_config, '_private')
-create_game_config = join_paths(game_config_private, 'create_game_config')
-
-test_utils = ['utils.h', 'utils.c']
+##################################
+# SETUP
+##################################
+test_utils = files('utils.h', 'utils.c')
 
 
-# Game config test file
-test_game_config_name = 'test_game_config.c'
+##################################
+# TEST CREATE GAME CONFIG
+##################################
+test_game_config_objects = [game_config_module.extract_all_objects(recursive: true)]
+test_game_config_objects += utils_module.extract_all_objects()
 
-test_game_config_src = files([test_game_config_name, 
-                              user / 'user_type.h',
-                              game_config / 'game_type.h',
-                              game_config / 'game_size.h',
-                              game_config / 'game_difficulty.h',
-                              game_config_private / 'game_config.c',
-                              ] + test_utils) 
+test_game_config_file = files('test_game_config.c')
+
+test_game_config_src = test_game_config_file + test_utils
 
 test_game_config_exe = executable('test_game_config',
   sources: [
    test_game_config_src,
-   cmock_gen_runner.process(test_game_config_name),
-   cmock_gen_mock.process(interfaces / 'std_lib_interface.h'),
+   std_lib_mock,
+   cmock_gen_runner.process(test_game_config_file),
   ],
-  include_directories: [src,
-                        user,
-                        interfaces,
-                        game_config,
-                        game_config_private,
-                        ],
+  objects: test_game_config_objects,
+  include_directories: [app_src_dirs],
   dependencies: test_dependencies,
   link_args: [
     # allow static functions testing

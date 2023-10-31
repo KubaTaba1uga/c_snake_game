@@ -24,6 +24,6 @@ typedef enum {
   GAME_DIFFICULTY_ENUM_LEN,
 } game_difficulty_t;
 
-/* const char *str_game_difficulty(game_difficulty_t game_difficulty); */
+const char *str_game_difficulty(game_difficulty_t game_difficulty);
 
 #endif
