@@ -13,10 +13,10 @@
 #include "../../../../user/user_type.h"
 #include "../../../../utils/logging_utils.h"
 #include "../../../../utils/str_utils.h"
+#include "../../../game_difficulty.h"
 #include "../../../game_type.h"
 #include "../../_p_game_config.h"
-#include "../_p_create_game_config_from_cli.h"
-#include "../game_difficulty.h"
+#include "_p_create_difficulty_cli.h"
 
 /*******************************************************************************
  *    DATA
