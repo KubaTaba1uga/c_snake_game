@@ -69,7 +69,7 @@ game_config_ptr create_game_config_from_cli(int argc, char *argv[]) {
   //  only one execution is possible.
   optind = 1;
 
-  game_config = create_game_config();
+  game_config = _p_create_game_config();
 
   if (!game_config) {
     // TO-DO set errno to OOM

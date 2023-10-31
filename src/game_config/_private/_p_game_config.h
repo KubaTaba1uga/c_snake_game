@@ -12,15 +12,15 @@
 #include <stddef.h>
 
 #include "../../user/user_type.h"
-#include "../game_config.h"
 #include "../game_difficulty.h"
 #include "../game_size.h"
 #include "../game_type.h"
+#include "game_config.h"
 
 /*******************************************************************************
  *    PRIVATE API
  ******************************************************************************/
-game_config_ptr create_game_config(void);
+game_config_ptr _p_create_game_config(void);
 void destroy_game_config(game_config_ptr game_config);
 
 void set_game_config_type(game_config_ptr game_config, game_type_t game_type);

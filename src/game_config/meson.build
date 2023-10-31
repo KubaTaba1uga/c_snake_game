@@ -12,3 +12,5 @@ game_config_module = shared_library(
   game_config_sources,
   link_with: [user_module, interfaces_module, utils_module]
 )
+
+app_modules += [game_config_module]

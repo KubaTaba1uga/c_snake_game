@@ -39,7 +39,7 @@ void test_create_difficulty_cli_success(void) {
   game_difficulty_t expected[] = {EASY,   EASY, EASY, MEDIUM, MEDIUM,
                                   MEDIUM, HARD, HARD, HARD};
 
-  game_config_ptr game_config = create_game_config();
+  game_config_ptr game_config = _p_create_game_config();
   size_t i;
 
   for (i = 0; i < sizeof(user_value) / sizeof(char *); i++) {
@@ -52,7 +52,7 @@ void test_create_difficulty_cli_success(void) {
 }
 
 void test_create_difficulty_cli_no_value(void) {
-  game_config_ptr game_config = create_game_config();
+  game_config_ptr game_config = _p_create_game_config();
 
   game_config = create_difficulty_cli(game_config, NULL);
 
@@ -60,7 +60,7 @@ void test_create_difficulty_cli_no_value(void) {
 }
 
 void test_create_difficulty_cli_wrong_value(void) {
-  game_config_ptr game_config = create_game_config();
+  game_config_ptr game_config = _p_create_game_config();
 
   game_config = create_difficulty_cli(game_config, "whatever");
 

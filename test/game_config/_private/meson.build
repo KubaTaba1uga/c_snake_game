@@ -5,7 +5,7 @@ test_utils = files('utils.h', 'utils.c')
 
 
 ##################################
-# TEST CREATE GAME CONFIG
+# TEST GAME CONFIG
 ##################################
 test_game_config_objects = [game_config_module.extract_all_objects(recursive: true)]
 test_game_config_objects += utils_module.extract_all_objects()

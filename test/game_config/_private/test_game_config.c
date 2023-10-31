@@ -43,7 +43,7 @@ void test_create_game_config(void) {
 
   game_config = NULL;
 
-  game_config = create_game_config();
+  game_config = _p_create_game_config();
 
   TEST_ASSERT_NOT_NULL(game_config);
   TEST_ASSERT_NULL(game_config->users_types);
@@ -52,7 +52,7 @@ void test_create_game_config(void) {
 void test_destroy_game_config(void) {
   game_config_ptr game_config;
 
-  game_config = create_game_config();
+  game_config = _p_create_game_config();
 
   app_free_Expect(game_config);
 
@@ -63,7 +63,7 @@ void test_get_game_config_type(void) {
   game_config_ptr game_config;
   game_type_t game_type;
 
-  game_config = create_game_config();
+  game_config = _p_create_game_config();
 
   game_config->type = LOCAL;
 
@@ -76,7 +76,7 @@ void test_get_game_config_difficulty(void) {
   game_config_ptr game_config;
   game_difficulty_t game_difficulty;
 
-  game_config = create_game_config();
+  game_config = _p_create_game_config();
 
   game_config->difficulty = EASY;
 
@@ -90,7 +90,7 @@ void test_get_game_config_size(void) {
   game_config_ptr game_config;
   game_size_t game_size;
 
-  game_config = create_game_config();
+  game_config = _p_create_game_config();
 
   game_config->size = SMALL;
 
@@ -103,7 +103,7 @@ void test_get_game_config_users_amount(void) {
   game_config_ptr game_config;
   size_t users_amount;
 
-  game_config = create_game_config();
+  game_config = _p_create_game_config();
 
   game_config->users_amount = 5;
 
@@ -118,7 +118,7 @@ void test_get_game_config_users_types(void) {
 
   user_type_t expected_users_types[] = {HUMAN};
 
-  game_config = create_game_config();
+  game_config = _p_create_game_config();
 
   game_config->users_types = expected_users_types;
 
@@ -131,7 +131,7 @@ void test_get_game_config_users_types(void) {
 void test_set_game_config_type(void) {
   game_config_ptr game_config;
 
-  game_config = create_game_config();
+  game_config = _p_create_game_config();
 
   set_game_config_type(game_config, LOCAL);
 
@@ -142,7 +142,7 @@ void test_set_game_config_type(void) {
 void test_set_game_config_difficulty(void) {
   game_config_ptr game_config;
 
-  game_config = create_game_config();
+  game_config = _p_create_game_config();
 
   set_game_config_difficulty(game_config, EASY);
 
@@ -153,7 +153,7 @@ void test_set_game_config_difficulty(void) {
 void test_set_game_config_size(void) {
   game_config_ptr game_config;
 
-  game_config = create_game_config();
+  game_config = _p_create_game_config();
 
   set_game_config_size(game_config, SMALL);
 
@@ -166,7 +166,7 @@ void test_set_game_config_users_types(void) {
   user_type_t users_types[] = {HUMAN, HUMAN, HUMAN};
   size_t users_amount = sizeof(users_types) / sizeof(user_type_t);
 
-  game_config = create_game_config();
+  game_config = _p_create_game_config();
 
   set_game_config_users_types(game_config, users_amount, users_types);
 

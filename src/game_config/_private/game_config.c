@@ -6,11 +6,11 @@
 // App
 #include "../../interfaces/std_lib_interface.h"
 #include "../../user/user_type.h"
-#include "../game_config.h"
 #include "../game_difficulty.h"
 #include "../game_size.h"
 #include "../game_type.h"
 #include "_p_game_config.h"
+#include "game_config.h"
 
 /*******************************************************************************
  *    DATA
@@ -31,7 +31,7 @@ struct game_config {
 /*******************************************************************************
  *    API
  ******************************************************************************/
-game_config_ptr create_game_config(void) {
+game_config_ptr _p_create_game_config(void) {
   game_config_ptr local_game_config;
 
   local_game_config = app_malloc(sizeof(struct game_config));

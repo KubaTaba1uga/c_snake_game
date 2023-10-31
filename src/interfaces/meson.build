@@ -7,4 +7,6 @@ interfaces_sources = std_lib_interface_header + files(
 interfaces_module = shared_library(
   'interfaces_module',
   interfaces_sources
-  )
+)
+
+app_modules += [interfaces_module]

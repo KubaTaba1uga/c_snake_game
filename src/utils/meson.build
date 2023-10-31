@@ -10,3 +10,4 @@ utils_module = shared_library(
   dependencies: [logging_dep]
 )
 
+app_modules += [utils_module]
