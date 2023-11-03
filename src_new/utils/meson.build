@@ -8,6 +8,7 @@ utils_module = library(
   'utils_module',
   utils_sources,
   dependencies: [logging_dep],
+  link_with: [proj_config_module],
   name_prefix: ''
 )
 

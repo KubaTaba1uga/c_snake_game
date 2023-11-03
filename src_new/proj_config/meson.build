@@ -1,4 +1,4 @@
-proj_config_sources = files('error.h')
+proj_config_sources = files(['error.h', 'constant.h'])
 
 subdir('_private')
 

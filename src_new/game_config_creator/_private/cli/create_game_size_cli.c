@@ -9,7 +9,7 @@
 
 // App
 #include "../../../game_config/game_config.h"
-#include "../../../game_config/game_difficulty.h"
+#include "../../../game_config/game_size.h"
 #include "../../../proj_config/constant.h"
 #include "../../../proj_config/error.h"
 #include "../../../utils/logging_utils.h"
@@ -18,30 +18,27 @@
 /*******************************************************************************
  *    DATA
  ******************************************************************************/
-static const char *valid_user_values[] = {"easy", "medium", "hard"};
-static const game_difficulty_t user_values_difficulty_map[] = {EASY, MEDIUM,
-                                                               HARD};
-static const char file_id[] = "create_game_config_difficulty_cli";
-static const game_difficulty_t default_difficulty = EASY;
+static const char *valid_user_values[] = {"small", "medium", "big"};
+static const game_size_t user_values_game_size_map[] = {SMALL, AVARAGE, BIG};
+static const char file_id[] = "create_game_size_cli";
+static const game_size_t default_size = SMALL;
 
 /*******************************************************************************
  *    PRIVATE DECLARATIONS
  ******************************************************************************/
-inline game_config_ptr _create_game_difficulty_cli(game_config_ptr game_config,
-                                                   char *value);
-inline game_difficulty_t
-convert_user_input_to_game_difficulty_t(char *user_input);
+inline game_config_ptr _create_game_size_cli(game_config_ptr game_config,
+                                             char *value);
+inline game_size_t convert_user_input_to_game_size_t(char *user_input);
 
 /*******************************************************************************
  *    PUBLIC API
  ******************************************************************************/
-game_config_ptr create_game_difficulty_cli(game_config_ptr game_config,
-                                           char *value) {
+game_config_ptr create_game_size_cli(game_config_ptr game_config, char *value) {
   game_config_ptr local_game_config;
 
   errno = 0;
 
-  local_game_config = _create_game_difficulty_cli(game_config, value);
+  local_game_config = _create_game_size_cli(game_config, value);
 
   if (!local_game_config) {
     switch (errno) {
@@ -51,13 +48,12 @@ game_config_ptr create_game_difficulty_cli(game_config_ptr game_config,
       break;
 
     case ERROR_GENERIC:
-      log_warning(
-          (char *)file_id,
-          "Cannot create game difficulty based on CLI value `%s`. Setting "
-          "default value",
-          value);
+      log_warning((char *)file_id,
+                  "Cannot create game size based on CLI value `%s`. Setting "
+                  "default value",
+                  value);
 
-      set_game_config_difficulty(game_config, default_difficulty);
+      set_game_config_size(game_config, default_size);
       local_game_config = game_config;
       break;
     }
@@ -69,34 +65,34 @@ game_config_ptr create_game_difficulty_cli(game_config_ptr game_config,
 /*******************************************************************************
  *    PRIVATE API
  ******************************************************************************/
-game_config_ptr _create_game_difficulty_cli(game_config_ptr game_config,
-                                            char *value) {
-  game_difficulty_t game_difficulty;
+game_config_ptr _create_game_size_cli(game_config_ptr game_config,
+                                      char *value) {
+  game_size_t game_size;
 
   if (!value) {
     errno = ERROR_NULL_POINTER;
     return NULL;
   }
 
-  game_difficulty =
-      (game_difficulty_t)convert_user_input_to_game_difficulty_t(value);
+  game_size = (game_size_t)convert_user_input_to_game_size_t(value);
 
-  if (game_difficulty == ENUM_INVALID) {
+  if (game_size == ENUM_INVALID) {
     errno = ERROR_GENERIC;
     return NULL;
   }
 
-  set_game_config_difficulty(game_config, game_difficulty);
+  set_game_config_size(game_config, game_size);
 
   return game_config;
 }
 
-game_difficulty_t convert_user_input_to_game_difficulty_t(char *user_input) {
+game_size_t convert_user_input_to_game_size_t(char *user_input) {
   const size_t buffer_size = 255;
   char local_buffer[buffer_size];
   size_t i;
   void *no_err;
 
+  // Cut str
   if (strlen(user_input) > buffer_size)
     user_input = cut_str(user_input, buffer_size - 1);
 
@@ -112,7 +108,7 @@ game_difficulty_t convert_user_input_to_game_difficulty_t(char *user_input) {
     if (!(are_strs_eq((char *)valid_user_values[i], local_buffer)))
       continue;
 
-    return user_values_difficulty_map[i];
+    return user_values_game_size_map[i];
   }
 
 ERROR:
