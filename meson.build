@@ -11,9 +11,9 @@ project('c_snake_game', 'c',
          ],
 )
 
-# ******************************************************************************
-# *    Logging
-# ******************************************************************************
+#******************************************************************************
+#*    Logging
+#******************************************************************************
 cmake = import('cmake')
 
 opt_var = cmake.subproject_options()
@@ -25,16 +25,17 @@ opt_var.set_override_option('werror', 'false')
 logging_proj = cmake.subproject('stumpless', options: opt_var)
 logging_dep = logging_proj.dependency('stumpless')
 
-# ******************************************************************************
-# *    App
-# ******************************************************************************
-app_deps = [logging_dep]
-subdir('src')
+# # ******************************************************************************
+# # *    App
+# # ******************************************************************************
+# app_deps = [logging_dep]
+# subdir('src')
 
-main = executable('main', global_sources, dependencies: app_deps, link_with: main_module)
+# main = executable('main', global_sources, dependencies: app_deps, link_with: main_module)
+subdir('src_new')
 
 # ******************************************************************************
 # *    Tests
 # ******************************************************************************
-subdir('test')
+# subdir('test')
 
