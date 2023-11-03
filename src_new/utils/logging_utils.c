@@ -8,10 +8,11 @@
 #include <stdlib.h>
 #include <stumpless.h>
 
-// App's data
-#include "../config.h"
+// App
 #include "../interfaces/std_lib_interface.h"
-#include "stumpless/severity.h"
+#include "../proj_config/constant.h"
+#include "../proj_config/error.h"
+
 /*******************************************************************************
  *    MACROS
  ******************************************************************************/
