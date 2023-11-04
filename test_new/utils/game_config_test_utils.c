@@ -61,3 +61,8 @@ void TEST_ASSERT_GAME_TYPE(game_type_t expected, game_type_t recived) {
 
   TEST_ASSERT_EQUAL_STRING(str_game_type(expected), str_game_type(recived));
 }
+
+void TEST_ASSERT_USER_TYPE(user_type_t expected, user_type_t recived) {
+
+  TEST_ASSERT_EQUAL_STRING(str_user_type(expected), str_user_type(recived));
+}

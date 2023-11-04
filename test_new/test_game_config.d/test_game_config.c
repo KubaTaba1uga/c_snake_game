@@ -106,14 +106,14 @@ void test_get_game_config_users_amount(void) {
 
   users_amount = get_game_config_users_amount(game_config);
 
-  TEST_ASSERT_EQUAL_MESSAGE(5, users_amount, "Users amount should be 5");
+  TEST_ASSERT_EQUAL(5, users_amount);
 }
 
 void test_get_game_config_users_types(void) {
+  user_type_t expected_users_types[] = {HUMAN};
   game_config_ptr game_config;
   user_type_t *users_types;
-
-  user_type_t expected_users_types[] = {HUMAN};
+  size_t i;
 
   game_config = create_game_config();
 
@@ -121,8 +121,8 @@ void test_get_game_config_users_types(void) {
 
   users_types = get_game_config_users_types(game_config);
 
-  TEST_ASSERT_EQUAL_MESSAGE(expected_users_types, users_types,
-                            "Users types should be {HUMAN}");
+  for (i = 0; i < sizeof(expected_users_types) / sizeof(user_type_t); i++)
+    TEST_ASSERT_USER_TYPE(expected_users_types[i], users_types[i]);
 }
 
 void test_set_game_config_type(void) {
@@ -157,15 +157,18 @@ void test_set_game_config_size(void) {
 
 void test_set_game_config_users_types(void) {
   game_config_ptr game_config;
-  user_type_t users_types[] = {HUMAN, HUMAN, HUMAN};
-  size_t users_amount = sizeof(users_types) / sizeof(user_type_t);
+  user_type_t expected_users_types[] = {HUMAN, HUMAN, HUMAN};
+  size_t expected_users_amount =
+      sizeof(expected_users_types) / sizeof(user_type_t);
+  size_t i;
 
   game_config = create_game_config();
 
-  set_game_config_users_types(game_config, users_amount, users_types);
+  set_game_config_users_types(game_config, expected_users_amount,
+                              expected_users_types);
 
-  TEST_ASSERT_EQUAL_MESSAGE(users_types, game_config->users_types,
-                            "Users types should be {HUMAN}");
-  TEST_ASSERT_EQUAL_MESSAGE(users_amount, game_config->users_amount,
-                            "Users amount should be 3");
+  TEST_ASSERT_EQUAL(expected_users_amount, game_config->users_amount);
+
+  for (i = 0; i < expected_users_amount; i++)
+    TEST_ASSERT_USER_TYPE(expected_users_types[i], game_config->users_types[i]);
 }
