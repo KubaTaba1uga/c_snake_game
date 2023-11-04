@@ -57,7 +57,6 @@ char getopt_fmt[255];
 /*******************************************************************************
  *    PUBLIC API
  ******************************************************************************/
-
 game_config_ptr create_game_config_from_cli(int argc, char *argv[]) {
   game_config_ptr (*creation_function)(game_config_ptr game_config,
                                        char *value);

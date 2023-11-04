@@ -18,10 +18,10 @@
 /*******************************************************************************
  *    DATA
  ******************************************************************************/
+static const char file_id[] = "create_game_config_difficulty_cli";
 static const char *valid_user_values[] = {"easy", "medium", "hard"};
 static const game_difficulty_t user_values_difficulty_map[] = {EASY, MEDIUM,
                                                                HARD};
-static const char file_id[] = "create_game_config_difficulty_cli";
 static const game_difficulty_t default_difficulty = EASY;
 
 /*******************************************************************************
