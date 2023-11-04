@@ -1,6 +1,6 @@
 test_utils_sources = files('game_config_test_utils.h', 'game_config_test_utils.c')
 
-test_utils_module = library('test_utils_module',
+test_utils_module = static_library('test_utils_module',
   sources: [
    test_utils_sources,
    std_lib_mock,

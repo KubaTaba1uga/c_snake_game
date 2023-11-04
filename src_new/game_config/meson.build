@@ -12,13 +12,13 @@ game_config_links = [
   proj_config_module
 ]
 
-game_config_dep = declare_dependency(
+game_config_deps = declare_dependency(
   link_with: game_config_links
 )
 
 game_config_module = static_library(
   'game_config_module',
   game_config_sources,
-  dependencies: game_config_dep,
+  dependencies: game_config_deps,
   name_prefix: '',
 )
