@@ -17,6 +17,6 @@ typedef enum {
   USER_TYPE_ENUM_LEN,
 } user_type_t;
 
-/* const char *str_user_type(user_type_t user_type); */
+const char *str_user_type(user_type_t user_type);
 
 #endif
