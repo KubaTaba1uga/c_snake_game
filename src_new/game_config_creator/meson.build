@@ -2,9 +2,16 @@ game_config_creator_sources = files()
 
 subdir('_private')
 
-game_config_creator_module = library(
+game_config_creator_links = [game_config_module]
+game_config_creator_links += utils_module
+
+game_config_creator_deps = declare_dependency(
+  link_with: game_config_creator_links,
+) 
+
+game_config_creator_module = static_library(
   'game_config_creator_module',
   game_config_creator_sources,
-  link_with: [interfaces_module, utils_module, game_config_module, proj_config_module],
+  dependencies: game_config_creator_deps,
   name_prefix: ''
 )

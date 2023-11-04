@@ -17,6 +17,7 @@
 #include "game_config/game_size.h"
 #include "game_config/game_type.h"
 #include "game_config/user_type.h"
+#include "proj_config/constant.h"
 
 // Test utils
 #include "../utils/game_config_test_utils.h"
@@ -40,6 +41,10 @@ void test_create_game_config(void) {
 
   TEST_ASSERT_NOT_NULL(game_config);
   TEST_ASSERT_NULL(game_config->users_types);
+  TEST_ASSERT_EQUAL(0, game_config->users_amount);
+  TEST_ASSERT_EQUAL(ENUM_INVALID, game_config->type);
+  TEST_ASSERT_EQUAL(ENUM_INVALID, game_config->size);
+  TEST_ASSERT_EQUAL(ENUM_INVALID, game_config->difficulty);
 }
 
 void test_destroy_game_config(void) {

@@ -6,6 +6,7 @@
 
 // App
 #include "../../interfaces/std_lib_interface.h"
+#include "../../proj_config/constant.h"
 #include "../game_config.h"
 #include "../game_difficulty.h"
 #include "../game_size.h"
@@ -40,9 +41,9 @@ game_config_ptr create_game_config(void) {
     // TO-DO log error
     return NULL;
 
-  local_game_config->type = -1;
-  local_game_config->difficulty = -1;
-  local_game_config->size = -1;
+  local_game_config->type = ENUM_INVALID;
+  local_game_config->difficulty = ENUM_INVALID;
+  local_game_config->size = ENUM_INVALID;
   local_game_config->users_amount = 0;
   local_game_config->users_types = NULL;
 
