@@ -22,9 +22,6 @@
  ******************************************************************************/
 game_config_ptr game_config_mock = NULL;
 
-void setUp() {}
-void tearDown() {}
-
 void create_game_config_mock(void) {
   size_t game_config_size;
 

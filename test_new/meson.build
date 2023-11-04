@@ -15,7 +15,7 @@ cmock_subproject = subproject('cmock')
 unity_dependency = cmock_subproject.get_variable('unity_dep')
 cmock_dependency = cmock_subproject.get_variable('cmock_dep')
 
-test_dependencies = [logging_dep, unity_dependency, cmock_dependency]
+test_dependencies = [unity_dependency, cmock_dependency]
 
 cmock_gen_runner = generator(
   find_program(_scripts / 'create_runner.rb'),
@@ -42,4 +42,4 @@ std_lib_mock = cmock_gen_mock.process(std_lib_interface_header)
 subdir('utils')
 subdir('test_cmock.d')
 subdir('test_game_config.d')
-
+subdir('test_game_config_creator.d')
