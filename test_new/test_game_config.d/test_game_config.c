@@ -22,12 +22,6 @@
 #include "../utils/game_config_test_utils.h"
 
 /*******************************************************************************
- *    DATA
- ******************************************************************************/
-
-game_config_ptr game_config_mock = NULL;
-
-/*******************************************************************************
  *    SETUP, TEARDOWN
  ******************************************************************************/
 void setUp() { create_game_config_mock(); }
@@ -68,7 +62,7 @@ void test_get_game_config_type(void) {
 
   game_type = get_game_config_type(game_config);
 
-  TEST_ASSERT_EQUAL_MESSAGE(LOCAL, game_type, "Game type should be LOCAL");
+  TEST_ASSERT_GAME_TYPE(LOCAL, game_type);
 }
 
 void test_get_game_config_difficulty(void) {
@@ -81,8 +75,7 @@ void test_get_game_config_difficulty(void) {
 
   game_difficulty = get_game_config_difficulty(game_config);
 
-  TEST_ASSERT_EQUAL_MESSAGE(EASY, game_difficulty,
-                            "Game difficulty should be EASY");
+  TEST_ASSERT_GAME_DIFFICULTY(EASY, game_difficulty);
 }
 
 void test_get_game_config_size(void) {
@@ -91,11 +84,11 @@ void test_get_game_config_size(void) {
 
   game_config = create_game_config();
 
-  game_config->size = SMALL;
+  game_config->size = BIG;
 
   game_size = get_game_config_size(game_config);
 
-  TEST_ASSERT_EQUAL_MESSAGE(SMALL, game_size, "Game size should be SMALL");
+  TEST_ASSERT_GAME_SIZE(BIG, game_size);
 }
 
 void test_get_game_config_users_amount(void) {
@@ -134,8 +127,7 @@ void test_set_game_config_type(void) {
 
   set_game_config_type(game_config, LOCAL);
 
-  TEST_ASSERT_EQUAL_MESSAGE(LOCAL, game_config->type,
-                            "Game type should be LOCAL");
+  TEST_ASSERT_GAME_TYPE(LOCAL, game_config->type);
 }
 
 void test_set_game_config_difficulty(void) {
@@ -145,8 +137,7 @@ void test_set_game_config_difficulty(void) {
 
   set_game_config_difficulty(game_config, EASY);
 
-  TEST_ASSERT_EQUAL_MESSAGE(EASY, game_config->difficulty,
-                            "Game difficulty should be EASY");
+  TEST_ASSERT_GAME_DIFFICULTY(EASY, game_config->difficulty);
 }
 
 void test_set_game_config_size(void) {
@@ -154,10 +145,9 @@ void test_set_game_config_size(void) {
 
   game_config = create_game_config();
 
-  set_game_config_size(game_config, SMALL);
+  set_game_config_size(game_config, BIG);
 
-  TEST_ASSERT_EQUAL_MESSAGE(SMALL, game_config->size,
-                            "Game size should be SMALL");
+  TEST_ASSERT_GAME_SIZE(BIG, game_config->size);
 }
 
 void test_set_game_config_users_types(void) {

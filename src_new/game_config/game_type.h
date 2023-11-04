@@ -16,6 +16,6 @@ typedef enum {
   GAME_TYPE_ENUM_LEN,
 } game_type_t;
 
-/* const char *str_game_type(game_type_t game_type); */
+const char *str_game_type(game_type_t game_type);
 
 #endif
