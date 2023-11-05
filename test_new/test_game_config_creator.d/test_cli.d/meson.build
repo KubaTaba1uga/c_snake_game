@@ -78,3 +78,23 @@ test_create_user_type_cli_exe = executable('test_create_user_type_cli',
 )
 
 test('test_create_user_type_cli', test_create_user_type_cli_exe)
+
+##################################
+# TEST CREATE USERS TYPES CLI
+##################################
+test_create_users_types_cli_file = files('test_create_users_types_cli.c')
+
+test_create_users_types_cli_exe = executable('test_create_users_types_cli',
+  sources: [
+    test_create_users_types_cli_file,
+    cmock_gen_runner.process(test_create_users_types_cli_file),
+  ],
+  include_directories: app_src_dirs,
+  dependencies: test_dependencies,
+  link_with: [
+    test_utils_module,
+    game_config_creator_module,
+  ],
+)
+
+test('test_create_users_types_cli', test_create_users_types_cli_exe)

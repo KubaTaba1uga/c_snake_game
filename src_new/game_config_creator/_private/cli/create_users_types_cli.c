@@ -10,12 +10,11 @@
 
 // App
 #include "../../../game_config/game_config.h"
-#include "../../../game_config/game_size.h"
+#include "../../../game_config/user_type.h"
 #include "../../../interfaces/std_lib_interface.h"
 #include "../../../proj_config/constant.h"
 #include "../../../proj_config/error.h"
 #include "../../../utils/logging_utils.h"
-#include "../../../utils/str_utils.h"
 #include "create_user_type_cli.h"
 #include "utils.h"
 
@@ -84,7 +83,7 @@ game_config_ptr _create_users_types_cli(game_config_ptr game_config,
 
   user_type = convert_user_input_to_user_type_t(value);
 
-  if (!user_type) {
+  if (user_type == ENUM_INVALID) {
     goto ERROR;
   }
 
@@ -100,6 +99,7 @@ game_config_ptr _create_users_types_cli(game_config_ptr game_config,
   users_number = get_game_config_users_amount(game_config);
 
   if (users_number > max_users_amount) {
+    app_free(users_types);
     errno = ERROR_TOO_MANY_USERS;
     goto ERROR;
   }
@@ -111,6 +111,7 @@ game_config_ptr _create_users_types_cli(game_config_ptr game_config,
   return game_config;
 
 ERROR:
+  set_game_config_users_types(game_config, 0, NULL);
   return NULL;
 }
 

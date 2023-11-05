@@ -16,7 +16,10 @@ test_utils_module = static_library('test_utils_module',
     # allow static functions testing
     '-zmuldefs',
   ],
-  name_prefix: ''
+  name_prefix: '',
+  c_args: [
+    '-DLOGGING_ENABLED=1'
+  ],
 )
 
 
