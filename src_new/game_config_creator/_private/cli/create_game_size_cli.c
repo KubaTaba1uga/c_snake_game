@@ -101,6 +101,8 @@ game_size_t convert_user_input_to_game_size_t(char *user_input) {
     goto ERROR;
   }
 
+  trim_whitespace_str(local_buffer);
+
   lower_str(local_buffer);
 
   for (i = 0; i < sizeof(valid_user_values) / sizeof(char *); i++) {

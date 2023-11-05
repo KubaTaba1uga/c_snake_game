@@ -7,5 +7,9 @@
 char *lower_str(char *str);
 
 bool are_strs_eq(char *src, char *target);
+
 char *cut_str(char *str, size_t i);
+
+void trim_whitespace_str(char *str);
+
 #endif

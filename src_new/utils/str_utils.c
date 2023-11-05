@@ -21,3 +21,14 @@ char *cut_str(char *str, size_t i) {
   str[i] = 0;
   return str;
 }
+
+void trim_whitespace_str(char *str) {
+  int i = strlen(str) - 1;
+  while (i >= 0) {
+    if (str[i] == ' ' || str[i] == '\t')
+      i--;
+    else
+      break;
+  }
+  str[i + 1] = '\0';
+}
