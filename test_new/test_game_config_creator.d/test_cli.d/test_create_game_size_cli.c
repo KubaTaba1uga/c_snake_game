@@ -64,8 +64,8 @@ void test_create_size_cli_wrong_value(void) {
 }
 
 void test_convert_user_input_to_game_size_t_too_long_success(void) {
-  const size_t buffer_size = 300;
-  const char valid_value[] = "small";
+  const size_t buffer_size = 500;
+  const char valid_value[] = "big";
 
   char user_value[buffer_size];
   game_size_t received;
@@ -79,5 +79,5 @@ void test_convert_user_input_to_game_size_t_too_long_success(void) {
 
   received = convert_user_input_to_game_size_t(user_value);
 
-  TEST_ASSERT_GAME_SIZE(SMALL, received);
+  TEST_ASSERT_GAME_SIZE(BIG, received);
 }

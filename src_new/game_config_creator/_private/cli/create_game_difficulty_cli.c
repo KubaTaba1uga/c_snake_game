@@ -98,7 +98,7 @@ game_difficulty_t convert_user_input_to_game_difficulty_t(char *user_input) {
   void *no_err;
 
   if (strlen(user_input) > buffer_size)
-    user_input = cut_str(user_input, buffer_size - 1);
+    cut_str(user_input, buffer_size - 1);
 
   no_err = strcpy(local_buffer, user_input);
   if (!no_err) {
