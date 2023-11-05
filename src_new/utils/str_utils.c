@@ -26,5 +26,4 @@ void remove_spaces(char* s) {
 
     *s++ = *tmp++;    
   }
-  
 }
