@@ -28,4 +28,6 @@ void remove_spaces(char *s) {
   }
 
   *s = 0;
+
+  return;
 }

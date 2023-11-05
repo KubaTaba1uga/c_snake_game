@@ -43,3 +43,16 @@ void test_convert_user_input_to_user_type_t_success(void) {
     TEST_ASSERT_USER_TYPE(expected[i], received);
   }
 }
+
+void test_convert_user_input_to_user_type_t_failure(void) {
+  char *user_value[] = {"hu",    "Hum", "HUMA", "ai",  "ai_",
+                        "Ai_Ea", "hs",  "Hw",   "aew", "AR"};
+  user_type_t received;
+  size_t i;
+
+  for (i = 0; i < sizeof(user_value) / sizeof(char *); i++) {
+    received = convert_user_input_to_user_type_t(user_value[i]);
+
+    TEST_ASSERT_EQUAL(ENUM_INVALID, received);
+  }
+}

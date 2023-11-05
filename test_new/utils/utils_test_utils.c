@@ -11,7 +11,4 @@ void set_up_loggers(void) {
     init_loggers();
 }
 
-void tear_down_loggers(void) {
-  if (LOGGING_ENABLED)
-    destroy_loggers();
-}
+void tear_down_loggers(void) { destroy_loggers(); }

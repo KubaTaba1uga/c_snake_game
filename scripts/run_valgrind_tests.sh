@@ -8,5 +8,5 @@ then
     builddir="build"
 fi
 
-meson test --wrap='valgrind --leak-check=full --show-leak-kinds=all --error-exitcode=1 -s' $test_name -C $builddir && \
+meson test --wrap='valgrind --leak-check=full --show-leak-kinds=all --error-exitcode=1 -s --track-origins=yes' $test_name -C $builddir
 cat $builddir/meson-logs/testlog-valgrind.txt
