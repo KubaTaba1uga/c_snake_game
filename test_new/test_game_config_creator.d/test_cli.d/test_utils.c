@@ -51,7 +51,7 @@ void test_sanitize_user_value_trim_trailing_ws(void) {
   TEST_ASSERT_EQUAL_STRING(input_value, received);
 }
 
-void test_sanitize_user_value_strip_ws(void) {
+void test_sanitize_user_value_trim_ws(void) {
   const size_t buffer_size = 100;
   const char input_value[] = "             big                   ";
   const char expected_value[] = "big";

@@ -14,6 +14,7 @@ char *sanitize_user_input(char *user_input, size_t buffer_size,
 
   remove_spaces(buffer);
 
+  // Adds null termination if it is absent
   cut_str(buffer, buffer_size - 1);
 
   lower_str(buffer);
