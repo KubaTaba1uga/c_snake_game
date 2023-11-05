@@ -57,6 +57,8 @@ game_config_ptr create_game_size_cli(game_config_ptr game_config, char *value) {
       set_game_config_size(game_config, default_size);
       local_game_config = game_config;
       break;
+    default:
+      log_error((char *)file_id, "Unknown errno value %i", errno);
     }
   }
 

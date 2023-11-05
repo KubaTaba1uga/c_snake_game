@@ -61,6 +61,8 @@ game_config_ptr create_game_difficulty_cli(game_config_ptr game_config,
       set_game_config_difficulty(game_config, default_difficulty);
       local_game_config = game_config;
       break;
+    default:
+      log_error((char *)file_id, "Unknown errno value %i", errno);
     }
   }
 

@@ -4,8 +4,6 @@
 // C standard library
 #include <errno.h>
 #include <stddef.h>
-#include <stdio.h>
-#include <string.h>
 
 // App
 #include "../../../game_config/game_config.h"
@@ -33,8 +31,9 @@ user_type_t convert_user_input_to_user_type_t(char *user_input) {
   size_t i;
 
   received = sanitize_user_input(user_input, buffer_size, local_buffer);
-  if (!received)
+  if (!received) {
     goto ERROR;
+  }
 
   for (i = 0; i < sizeof(valid_user_values) / sizeof(char *); i++) {
 
@@ -45,5 +44,7 @@ user_type_t convert_user_input_to_user_type_t(char *user_input) {
   }
 
 ERROR:
+  errno = ERROR_INVALID_USER_INPUT;
+
   return ENUM_INVALID;
 }
