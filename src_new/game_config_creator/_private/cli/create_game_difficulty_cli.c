@@ -14,6 +14,7 @@
 #include "../../../proj_config/error.h"
 #include "../../../utils/logging_utils.h"
 #include "../../../utils/str_utils.h"
+#include "utils.h"
 
 /*******************************************************************************
  *    DATA
@@ -95,17 +96,14 @@ game_difficulty_t convert_user_input_to_game_difficulty_t(char *user_input) {
   const size_t buffer_size = 255;
   char local_buffer[buffer_size];
   size_t i;
-  void *no_err;
+  void *received;
 
-  if (strlen(user_input) > buffer_size)
-    cut_str(user_input, buffer_size - 1);
 
-  no_err = strcpy(local_buffer, user_input);
-  if (!no_err) {
+  received = sanitize_user_input(user_input, buffer_size, local_buffer);
+  
+  if (!received) {
     goto ERROR;
   }
-
-  lower_str(local_buffer);
 
   for (i = 0; i < sizeof(valid_user_values) / sizeof(char *); i++) {
 

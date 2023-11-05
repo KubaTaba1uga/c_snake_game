@@ -93,11 +93,11 @@ game_config_ptr _create_game_size_cli(game_config_ptr game_config,
 game_size_t convert_user_input_to_game_size_t(char *user_input) {
   const size_t buffer_size = 255;
   char local_buffer[buffer_size];
-  void *no_err;
+  void *received;
   size_t i;
 
-  no_err = sanitize_user_input(user_input, buffer_size, local_buffer);
-  if (!no_err)
+  received = sanitize_user_input(user_input, buffer_size, local_buffer);
+  if (!received)
     goto ERROR;
 
   for (i = 0; i < sizeof(valid_user_values) / sizeof(char *); i++) {

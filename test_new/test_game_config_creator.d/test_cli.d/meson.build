@@ -11,13 +11,8 @@ test_cli_utils_exe = executable('test_cli_utils',
   include_directories: app_src_dirs,
   dependencies: test_dependencies,
   link_with: [
-#    test_utils_module,
     game_config_creator_module,
   ],
-  # link_args: [
-  #   # allow static functions testing
-  #   '-zmuldefs',
-  # ],
 )
 
 test('test_cli_utils', test_cli_utils_exe)
@@ -38,12 +33,29 @@ test_create_game_size_cli_exe = executable('test_create_game_size_cli',
     test_utils_module,
     game_config_creator_module,
   ],
-  link_args: [
-    # allow static functions testing
-    '-zmuldefs',
-  ],
 )
 
 test('test_create_game_size_cli', test_create_game_size_cli_exe)
+
+
+##################################
+# TEST CREATE GAME DIFFICULTY CLI
+##################################
+test_create_game_difficulty_cli_file = files('test_create_game_difficulty_cli.c')
+
+test_create_game_difficulty_cli_exe = executable('test_create_game_difficulty_cli',
+  sources: [
+    test_create_game_difficulty_cli_file,
+    cmock_gen_runner.process(test_create_game_difficulty_cli_file),
+  ],
+  include_directories: app_src_dirs,
+  dependencies: test_dependencies,
+  link_with: [
+    test_utils_module,
+    game_config_creator_module,
+  ],
+)
+
+test('test_create_game_difficulty_cli', test_create_game_difficulty_cli_exe)
 
 
