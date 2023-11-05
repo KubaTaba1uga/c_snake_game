@@ -15,7 +15,7 @@ char *sanitize_user_input(char *user_input, size_t buffer_size,
   remove_spaces(buffer);
 
   cut_str(buffer, buffer_size - 1);
-  
+
   lower_str(buffer);
 
   return buffer;

@@ -16,14 +16,16 @@ bool are_strs_eq(char *src, char *target) { return (strcmp(src, target) == 0); }
 
 void cut_str(char *str, size_t i) { str[i] = 0; }
 
-void remove_spaces(char* s) {
-  char* tmp = s;
-  
+void remove_spaces(char *s) {
+  char *tmp = s;
+
   while (*tmp != 0) {
     while (*tmp == ' ') {
       tmp++;
     }
 
-    *s++ = *tmp++;    
+    *s++ = *tmp++;
   }
+
+  *s = 0;
 }

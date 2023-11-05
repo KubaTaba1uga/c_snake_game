@@ -86,7 +86,7 @@ game_config_ptr _create_game_size_cli(game_config_ptr game_config,
 
   return game_config;
 
- ERROR:
+ERROR:
   return NULL;
 }
 

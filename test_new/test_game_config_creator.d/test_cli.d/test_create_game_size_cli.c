@@ -65,4 +65,3 @@ void test_create_size_cli_wrong_value(void) {
   TEST_ASSERT_NOT_NULL(game_config);
   TEST_ASSERT_GAME_SIZE(SMALL, get_game_config_size(game_config));
 }
-

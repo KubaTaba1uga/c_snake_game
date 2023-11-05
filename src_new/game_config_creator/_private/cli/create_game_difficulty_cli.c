@@ -98,9 +98,8 @@ game_difficulty_t convert_user_input_to_game_difficulty_t(char *user_input) {
   size_t i;
   void *received;
 
-
   received = sanitize_user_input(user_input, buffer_size, local_buffer);
-  
+
   if (!received) {
     goto ERROR;
   }
