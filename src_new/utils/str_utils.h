@@ -10,6 +10,6 @@ bool are_strs_eq(char *src, char *target);
 
 void cut_str(char *str, size_t i);
 
-void trim_trailing_whitespaces_str(char *str);
+void remove_spaces(char *str);
 
 #endif

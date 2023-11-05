@@ -16,13 +16,15 @@ bool are_strs_eq(char *src, char *target) { return (strcmp(src, target) == 0); }
 
 void cut_str(char *str, size_t i) { str[i] = 0; }
 
-void trim_trailing_whitespaces_str(char *str) {
-  int i = strlen(str) - 1;
-  while (i >= 0) {
-    if (str[i] == ' ' || str[i] == '\t')
-      i--;
-    else
-      break;
+void remove_spaces(char* s) {
+  char* tmp = s;
+  
+  while (*tmp != 0) {
+    while (*tmp == ' ') {
+      tmp++;
+    }
+
+    *s++ = *tmp++;    
   }
-  str[i + 1] = '\0';
+  
 }
