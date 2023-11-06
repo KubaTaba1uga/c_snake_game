@@ -54,7 +54,8 @@ void test_create_size_cli_no_value(void) {
 
   game_config = create_game_size_cli(game_config, NULL);
 
-  TEST_ASSERT_NULL(game_config);
+  TEST_ASSERT_NOT_NULL(game_config);
+  TEST_ASSERT_GAME_SIZE(SMALL, get_game_config_size(game_config));
 }
 
 void test_create_size_cli_wrong_value(void) {

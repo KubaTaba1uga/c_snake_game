@@ -83,6 +83,7 @@ game_config_ptr _create_users_types_cli(game_config_ptr game_config,
   user_type = convert_user_input_to_user_type_t(value);
 
   if (user_type == ENUM_INVALID) {
+    errno = ERROR_INVALID_USER_INPUT;
     goto ERROR;
   }
 
@@ -91,6 +92,7 @@ game_config_ptr _create_users_types_cli(game_config_ptr game_config,
   if (!users_types) {
     users_types = create_users_types();
     if (!users_types) {
+      errno = ERROR_OOM;
       goto ERROR;
     }
   }
@@ -122,7 +124,6 @@ user_type_t *create_users_types(void) {
   local_users_types = app_malloc(max_users_amount * sizeof(user_type_t));
 
   if (!local_users_types) {
-    errno = ERROR_OOM;
     return NULL;
   }
 

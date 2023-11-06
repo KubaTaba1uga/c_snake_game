@@ -47,20 +47,17 @@ game_config_ptr create_game_difficulty_cli(game_config_ptr game_config,
   if (!local_game_config) {
     switch (errno) {
 
-    case ERROR_NULL_POINTER:
-      log_error((char *)file_id, "`value` cannot be `NULL`");
-      break;
-
-    case ERROR_GENERIC:
+    case ERROR_INVALID_USER_INPUT:
       log_warning(
           (char *)file_id,
           "Cannot create game difficulty based on CLI value `%s`. Setting "
-          "default value",
+          "default value: EASY.",
           value);
 
       set_game_config_difficulty(game_config, default_difficulty);
       local_game_config = game_config;
       break;
+
     default:
       log_error((char *)file_id, "Unknown errno value %i", errno);
     }
@@ -77,7 +74,7 @@ game_config_ptr _create_game_difficulty_cli(game_config_ptr game_config,
   game_difficulty_t game_difficulty;
 
   if (!value) {
-    errno = ERROR_NULL_POINTER;
+    errno = ERROR_INVALID_USER_INPUT;
     return NULL;
   }
 
@@ -85,7 +82,7 @@ game_config_ptr _create_game_difficulty_cli(game_config_ptr game_config,
       (game_difficulty_t)convert_user_input_to_game_difficulty_t(value);
 
   if (game_difficulty == ENUM_INVALID) {
-    errno = ERROR_GENERIC;
+    errno = ERROR_INVALID_USER_INPUT;
     return NULL;
   }
 

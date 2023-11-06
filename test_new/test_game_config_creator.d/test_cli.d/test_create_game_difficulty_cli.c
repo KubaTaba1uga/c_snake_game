@@ -56,7 +56,8 @@ void test_create_difficulty_cli_no_value(void) {
 
   game_config = create_game_difficulty_cli(game_config, NULL);
 
-  TEST_ASSERT_NULL(game_config);
+  TEST_ASSERT_NOT_NULL(game_config);
+  TEST_ASSERT_GAME_DIFFICULTY(EASY, get_game_config_difficulty(game_config));
 }
 
 void test_create_difficulty_cli_wrong_value(void) {

@@ -44,19 +44,16 @@ game_config_ptr create_game_size_cli(game_config_ptr game_config, char *value) {
   if (!local_game_config) {
     switch (errno) {
 
-    case ERROR_NULL_POINTER:
-      log_error((char *)file_id, "`value` cannot be `NULL`");
-      break;
-
-    case ERROR_GENERIC:
+    case ERROR_INVALID_USER_INPUT:
       log_warning((char *)file_id,
                   "Cannot create game size based on CLI value `%s`. Setting "
-                  "default value",
+                  "default value: SMALL.",
                   value);
 
       set_game_config_size(game_config, default_size);
       local_game_config = game_config;
       break;
+
     default:
       log_error((char *)file_id, "Unknown errno value %i", errno);
     }
@@ -73,14 +70,14 @@ game_config_ptr _create_game_size_cli(game_config_ptr game_config,
   game_size_t game_size;
 
   if (!value) {
-    errno = ERROR_NULL_POINTER;
+    errno = ERROR_INVALID_USER_INPUT;
     goto ERROR;
   }
 
   game_size = (game_size_t)convert_user_input_to_game_size_t(value);
 
   if ((int)game_size == ENUM_INVALID) {
-    errno = ERROR_GENERIC;
+    errno = ERROR_INVALID_USER_INPUT;
     goto ERROR;
   }
 
