@@ -1,7 +1,10 @@
 test_utils_sources = files('game_config_test_utils.h',
                            'game_config_test_utils.c',
                            'utils_test_utils.h',
-                           'utils_test_utils.c')
+                           'utils_test_utils.c',
+                           'game_config_creator_test_utils.c',
+                           'game_config_creator_test_utils.h',
+                          )
 
 test_utils_module = static_library('test_utils_module',
   sources: [

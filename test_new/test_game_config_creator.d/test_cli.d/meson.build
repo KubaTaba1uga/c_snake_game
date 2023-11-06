@@ -87,6 +87,7 @@ test_create_users_types_cli_file = files('test_create_users_types_cli.c')
 test_create_users_types_cli_exe = executable('test_create_users_types_cli',
   sources: [
     test_create_users_types_cli_file,
+    std_lib_mock,
     cmock_gen_runner.process(test_create_users_types_cli_file),
   ],
   include_directories: app_src_dirs,

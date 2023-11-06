@@ -5,6 +5,8 @@
 #include <errno.h>
 #include <stddef.h>
 
+#include <stdio.h>
+
 // App
 #include "../../../game_config/game_config.h"
 #include "../../../game_config/user_type.h"
@@ -40,11 +42,13 @@ user_type_t convert_user_input_to_user_type_t(char *user_input) {
     if (!(are_strs_eq((char *)valid_user_values[i], local_buffer)))
       continue;
 
+    /* printf("User input: `%s`\n", local_buffer); */
+    /* printf("Mapped value: `%i`\n", user_values_user_type_map[i]); */
     return user_values_user_type_map[i];
   }
 
 ERROR:
   errno = ERROR_INVALID_USER_INPUT;
-
+  /* printf("ERROR\n"); */
   return ENUM_INVALID;
 }

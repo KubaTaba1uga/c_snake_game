@@ -38,8 +38,8 @@ void create_game_config_mock(void) {
 void destroy_game_config_mock(void) {
   if (game_config_mock) {
     free(game_config_mock);
-    game_config_mock = NULL;
   }
+  game_config_mock = NULL;
 }
 
 void TEST_ASSERT_GAME_DIFFICULTY(game_difficulty_t expected,
