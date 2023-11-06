@@ -19,7 +19,8 @@
 user_type_t *users_types_mock = NULL;
 
 void create_users_types_mock(void) {
-  static const size_t mock_length = 255;
+  static const size_t mock_length = 100;
+  static const size_t max_users_amount = 8;
 
   user_type_t *mock = malloc(mock_length * sizeof(user_type_t));
 
@@ -27,6 +28,9 @@ void create_users_types_mock(void) {
     TEST_FAIL_MESSAGE("Unable to allocate memory for users types mock");
 
   users_types_mock = mock;
+
+  app_malloc_ExpectAndReturn(max_users_amount * sizeof(user_type_t),
+                             users_types_mock);
 }
 
 void destroy_users_types_mock(void) {

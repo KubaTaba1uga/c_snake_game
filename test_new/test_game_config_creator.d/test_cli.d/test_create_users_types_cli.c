@@ -28,12 +28,11 @@
 void setUp() {
   set_up_loggers();
   create_game_config_mock();
-  /* create_users_types_mock(); */
 }
 
 void tearDown() {
   destroy_game_config_mock();
-  /* destroy_users_types_mock(); */
+  destroy_users_types_mock();
   tear_down_loggers();
 }
 
@@ -45,25 +44,19 @@ void test_create_users_types_cli_success(void) {
                         "h",     "H",     "ae",      "AE"};
   user_type_t expected[] = {HUMAN, HUMAN, SIMPLE_PC, SIMPLE_PC,
                             HUMAN, HUMAN, SIMPLE_PC, SIMPLE_PC};
-  game_config_ptr game_config;
-  size_t i;
-  user_type_t *users_types;
 
-  app_malloc_IgnoreAndReturn(game_config_mock);
+  game_config_ptr game_config;
+  user_type_t *users_types;
+  size_t i;
 
   game_config = create_game_config();
 
-  /* app_malloc_IgnoreAndReturn(users_types_mock); */
+  create_users_types_mock();
 
   for (i = 0; i < sizeof(user_value) / sizeof(char *); i++) {
 
     game_config = create_users_types_cli(game_config, user_value[i]);
     users_types = get_game_config_users_types(game_config);
-
-    /* printf("User value: %s\n", user_value[i]); */
-    /* printf("Users types [%lu] : %i\n", i, users_types[i]); */
-
-    /* puts(""); */
 
     TEST_ASSERT_NOT_NULL(game_config);
     TEST_ASSERT_EQUAL(i + 1, get_game_config_users_amount(game_config));
@@ -93,7 +86,8 @@ void test_create_users_types_cli_failure_too_many_players(void) {
 
   game_config = create_game_config();
 
-  app_free_Ignore();
+  create_users_types_mock();
+  app_free_Expect(users_types_mock);
 
   for (i = 0; i < sizeof(user_value) / sizeof(char *); i++) {
     received = create_users_types_cli(game_config, user_value[i]);

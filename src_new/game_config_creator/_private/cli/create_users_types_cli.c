@@ -22,7 +22,7 @@
  *    DATA
  ******************************************************************************/
 static const char file_id[] = "create_users_types_cli";
-static const size_t max_users_amount = 100;
+static const size_t max_users_amount = 8;
 
 /*******************************************************************************
  *    PRIVATE DECLARATIONS
@@ -97,39 +97,29 @@ game_config_ptr _create_users_types_cli(game_config_ptr game_config,
 
   users_number = get_game_config_users_amount(game_config);
 
-  /* printf("Users amount: %lu\n\n\n", users_number); */
-
-  /* if (users_number > max_users_amount) { */
-  /*   app_free(users_types); */
-  /*   errno = ERROR_TOO_MANY_USERS; */
-  /*   goto ERROR; */
-  /* } */
-  printf("New value: `%i`\n", user_type);
-  printf("Before assignment Last value: `%i`\n", users_types[users_number]);
-  /* printf("Before assignment New value: `%i`\n", user_type); */
+  if (users_number > max_users_amount) {
+    app_free(users_types);
+    errno = ERROR_TOO_MANY_USERS;
+    goto ERROR;
+  }
 
   users_types[users_number] = user_type;
-
-  /* printf("User type private: %i\n", users_types[users_number]); */
 
   users_number++;
 
   set_game_config_users_types(game_config, users_number, users_types);
 
-  printf("After assignment Last value: `%i`\n\n",
-         users_types[users_number - 1]);
-
   return game_config;
 
 ERROR:
-  /* set_game_config_users_types(game_config, 0, NULL); */
+  set_game_config_users_types(game_config, 0, NULL);
   return NULL;
 }
 
 user_type_t *create_users_types(void) {
   user_type_t *local_users_types;
 
-  local_users_types = malloc(max_users_amount * sizeof(user_type_t));
+  local_users_types = app_malloc(max_users_amount * sizeof(user_type_t));
 
   if (!local_users_types) {
     errno = ERROR_OOM;
