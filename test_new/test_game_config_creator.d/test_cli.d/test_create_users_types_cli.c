@@ -98,3 +98,21 @@ void test_create_users_types_cli_failure_too_many_players(void) {
   TEST_ASSERT_EQUAL(0, get_game_config_users_amount(game_config));
   TEST_ASSERT_EQUAL(ERROR_TOO_MANY_USERS, errno);
 }
+
+void test_create_users_types_cli_failure_oom(void) {
+  char user_value[] = {"human"};
+  game_config_ptr game_config, received;
+
+  game_config = create_game_config();
+
+  app_malloc_IgnoreAndReturn(NULL);
+
+  received = create_users_types_cli(game_config, user_value);
+
+  app_malloc_StopIgnore();
+
+  TEST_ASSERT_NULL(received);
+  TEST_ASSERT_NULL(get_game_config_users_types(game_config));
+  TEST_ASSERT_EQUAL(0, get_game_config_users_amount(game_config));
+  TEST_ASSERT_EQUAL(ERROR_OOM, errno);
+}

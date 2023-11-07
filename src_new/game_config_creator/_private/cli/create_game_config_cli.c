@@ -21,43 +21,42 @@
 #include "../../../utils/logging_utils.h"
 #include "create_game_difficulty_cli.h"
 #include "create_game_size_cli.h"
+#include "create_users_types_cli.h"
 
 /*******************************************************************************
  *    PRIVATE DECLARATIONS
  ******************************************************************************/
-inline int get_option_i(char c);
+static int get_option_i(char c);
 
-inline game_config_ptr (*get_creation_function(int getopt_option_i))(
+static game_config_ptr (*get_creation_function(int getopt_option_i))(
     game_config_ptr game_config, char *value);
 
-inline void init_getopt_fmt(size_t n, struct option options[n]);
-
-inline game_config_ptr create_game_type(game_config_ptr game_conifg,
-                                        char *value);
+static void init_getopt_fmt(size_t n, struct option options[n]);
 
 /*******************************************************************************
  *    DATA
  ******************************************************************************/
-struct option getopt_options[] = {{"size", required_argument, 0, 's'},
-                                  {"difficulty", required_argument, 0, 'd'},
-                                  {"game_type", required_argument, 0, 'g'},
-                                  {0, 0, 0, 0}};
+static struct option getopt_options[] = {
+    {"size", required_argument, 0, 's'},
+    {"difficulty", required_argument, 0, 'd'},
+    {"user", required_argument, 0, 'u'},
+    {0, 0, 0, 0}};
 
-game_config_ptr (*const getopt_options_creation_functions_map[])(
+static game_config_ptr (*const getopt_options_creation_functions_map[])(
     game_config_ptr game_conifg, char *value) = {
     create_game_size_cli,
     create_game_difficulty_cli,
-    create_game_type,
+    create_users_types_cli,
     NULL,
 };
 
-char getopt_fmt[255];
+static char getopt_fmt[255];
 
 /*******************************************************************************
  *    PUBLIC API
  ******************************************************************************/
 
-game_config_ptr create_game_config_from_cli(int argc, char *argv[]) {
+game_config_ptr create_game_config_cli(int argc, char *argv[]) {
   game_config_ptr (*creation_function)(game_config_ptr game_config,
                                        char *value);
   game_config_ptr game_config;
@@ -92,6 +91,7 @@ game_config_ptr create_game_config_from_cli(int argc, char *argv[]) {
       // TO-DO set errno to unknown option
       // TO-DO log messgae
       // TO-DO print to stdout
+      // TO-DO free game config
       return NULL;
     }
 
@@ -101,10 +101,19 @@ game_config_ptr create_game_config_from_cli(int argc, char *argv[]) {
       // TO-DO set errno to unknown option
       // TO-DO log messgae
       // TO-DO print to stdout
+      // TO-DO free game config
       return NULL;
     }
 
     game_config = creation_function(game_config, optarg);
+
+    if (!game_config) {
+      // TO-DO set errno to cli creation failed
+      // TO-DO log messgae
+      // TO-DO print to stdout
+      // TO-DO free game config
+      return NULL;
+    }
   }
 
   return game_config;
@@ -145,10 +154,4 @@ void init_getopt_fmt(size_t n, struct option options[n]) {
     default:;
     }
   }
-}
-
-game_config_ptr create_game_type(game_config_ptr game_conifg, char *value) {
-  set_game_config_type(game_conifg, LOCAL);
-
-  return game_conifg;
 }
