@@ -21,7 +21,6 @@
 #include "../../utils/game_config_creator_test_utils.h"
 #include "../../utils/game_config_test_utils.h"
 #include "../../utils/utils_test_utils.h"
-#include "test_create_game_config_cli.p/mock_std_lib_interface.h"
 
 /*******************************************************************************
  *    SETUP, TEARDOWN

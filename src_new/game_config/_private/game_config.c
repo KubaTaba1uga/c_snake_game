@@ -2,11 +2,13 @@
  *    IMPORTS
  ******************************************************************************/
 // C standard library
+#include <errno.h>
 #include <stddef.h>
 
 // App
 #include "../../interfaces/std_lib_interface.h"
 #include "../../proj_config/constant.h"
+#include "../../proj_config/error.h"
 #include "../game_config.h"
 #include "../game_difficulty.h"
 #include "../game_size.h"
@@ -36,10 +38,10 @@ game_config_ptr create_game_config(void) {
 
   local_game_config = app_malloc(sizeof(struct game_config));
 
-  if (!local_game_config)
-    // TO-DO set errno to OOM error
-    // TO-DO log error
-    return NULL;
+  if (!local_game_config) {
+    errno = ERROR_OOM;
+    goto ERROR;
+  }
 
   local_game_config->type = ENUM_INVALID;
   local_game_config->difficulty = ENUM_INVALID;
@@ -48,6 +50,9 @@ game_config_ptr create_game_config(void) {
   local_game_config->users_types = NULL;
 
   return local_game_config;
+
+ERROR:
+  return NULL;
 }
 
 void destroy_game_config(game_config_ptr game_config) { app_free(game_config); }

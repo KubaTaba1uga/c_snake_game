@@ -43,32 +43,24 @@ game_config_ptr create_game_config_auto(int argc, char *argv[]) {
   game_config = create_game_config();
 
   if (!game_config) {
-    // TO-DO set errno to OOM
-    // TO-DO log msg
-    return NULL;
+    log_error((char *)file_id, "Unable to allocate memory for game config.");
+    goto ERROR;
   }
-
-  errno = 0;
 
   received = _create_game_config_auto(argc, argv, game_config);
 
   if (!received) {
+    // Detailed error logs should be provided by creation function.
     app_free(game_config);
-
-    switch (errno) {
-
-    case ERROR_INVALID_USER_INPUT:
-      log_error((char *)file_id, "Unable to create game config automatically.");
-      break;
-
-    default:
-      log_error((char *)file_id, "Unknown errno value %i", errno);
-    }
-
-    game_config = NULL;
+    errno = ERROR_GAME_CONFIG_CREATION_FAILURE;
+    log_error((char *)file_id, "Game config creation failed");
+    goto ERROR;
   }
 
   return game_config;
+
+ERROR:
+  return NULL;
 }
 
 /*******************************************************************************
@@ -95,7 +87,6 @@ game_config_ptr _create_game_config_auto(int argc, char **argv,
   }
 
   if (failure_counter == creation_f_size) {
-    errno = ERROR_GAME_CONFIG_CREATION_FAILURE;
     return NULL;
   }
 
