@@ -16,6 +16,7 @@ typedef enum {
   ERROR_GENERIC,
   ERROR_INVALID_USER_INPUT,
   ERROR_TOO_MANY_USERS,
+  ERROR_GAME_CONFIG_CREATION_FAILURE,
 
   /* Enum assigns values automatically by incrementing
    *   the first value. `ERROR_ENUM_LEN` stands for number

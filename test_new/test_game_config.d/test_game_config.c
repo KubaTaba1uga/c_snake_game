@@ -25,7 +25,10 @@
 /*******************************************************************************
  *    SETUP, TEARDOWN
  ******************************************************************************/
-void setUp() { create_game_config_mock(); }
+void setUp() {
+  create_game_config_mock();
+  app_malloc_ExpectAndReturn(game_config_expect_size, game_config_mock);
+}
 
 void tearDown() { destroy_game_config_mock(); }
 

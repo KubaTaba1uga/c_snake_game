@@ -56,24 +56,16 @@ static char getopt_fmt[255];
  *    PUBLIC API
  ******************************************************************************/
 
-game_config_ptr create_game_config_cli(int argc, char *argv[]) {
+game_config_ptr create_game_config_cli(int argc, char *argv[],
+                                       game_config_ptr game_config) {
   game_config_ptr (*creation_function)(game_config_ptr game_config,
                                        char *value);
-  game_config_ptr game_config;
   int getopt_flag, option_i;
 
   // Optind reset is required so function can be
   //  executed multiple times. Without the reset
   //  getopt is not repeateble.
   optind = 1;
-
-  game_config = create_game_config();
-
-  if (!game_config) {
-    // TO-DO set errno to OOM
-    // TO-DO log messgae
-    return NULL;
-  }
 
   init_getopt_fmt(sizeof(getopt_options) / sizeof(struct option),
                   getopt_options);
@@ -91,7 +83,6 @@ game_config_ptr create_game_config_cli(int argc, char *argv[]) {
       // TO-DO set errno to unknown option
       // TO-DO log messgae
       // TO-DO print to stdout
-      // TO-DO free game config
       return NULL;
     }
 
@@ -101,7 +92,6 @@ game_config_ptr create_game_config_cli(int argc, char *argv[]) {
       // TO-DO set errno to unknown option
       // TO-DO log messgae
       // TO-DO print to stdout
-      // TO-DO free game config
       return NULL;
     }
 
@@ -111,7 +101,6 @@ game_config_ptr create_game_config_cli(int argc, char *argv[]) {
       // TO-DO set errno to cli creation failed
       // TO-DO log messgae
       // TO-DO print to stdout
-      // TO-DO free game config
       return NULL;
     }
   }

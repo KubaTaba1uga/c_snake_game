@@ -17,20 +17,18 @@
  *    API
  ******************************************************************************/
 user_type_t *users_types_mock = NULL;
+size_t max_users_amount = 8;
+size_t users_types_expect_size = 0;
 
 void create_users_types_mock(void) {
   static const size_t mock_length = 100;
-  static const size_t max_users_amount = 8;
 
-  user_type_t *mock = malloc(mock_length * sizeof(user_type_t));
+  users_types_expect_size = max_users_amount * sizeof(user_type_t);
 
-  if (!mock)
+  users_types_mock = malloc(mock_length * sizeof(user_type_t));
+
+  if (!users_types_mock)
     TEST_FAIL_MESSAGE("Unable to allocate memory for users types mock");
-
-  users_types_mock = mock;
-
-  app_malloc_ExpectAndReturn(max_users_amount * sizeof(user_type_t),
-                             users_types_mock);
 }
 
 void destroy_users_types_mock(void) {

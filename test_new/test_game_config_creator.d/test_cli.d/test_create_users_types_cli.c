@@ -21,6 +21,7 @@
 #include "../../utils/game_config_creator_test_utils.h"
 #include "../../utils/game_config_test_utils.h"
 #include "../../utils/utils_test_utils.h"
+#include "test_create_game_config_cli.p/mock_std_lib_interface.h"
 
 /*******************************************************************************
  *    SETUP, TEARDOWN
@@ -28,6 +29,7 @@
 void setUp() {
   set_up_loggers();
   create_game_config_mock();
+  create_users_types_mock();
 }
 
 void tearDown() {
@@ -49,9 +51,11 @@ void test_create_users_types_cli_success(void) {
   user_type_t *users_types;
   size_t i;
 
+  app_malloc_ExpectAndReturn(game_config_expect_size, game_config_mock);
+
   game_config = create_game_config();
 
-  create_users_types_mock();
+  app_malloc_ExpectAndReturn(users_types_expect_size, users_types_mock);
 
   for (i = 0; i < sizeof(user_value) / sizeof(char *); i++) {
 
@@ -67,6 +71,8 @@ void test_create_users_types_cli_success(void) {
 void test_create_users_types_cli_failure_wrong_value(void) {
   char user_value[] = {"whatever"};
   game_config_ptr game_config, received;
+
+  app_malloc_ExpectAndReturn(game_config_expect_size, game_config_mock);
 
   game_config = create_game_config();
 
@@ -84,9 +90,11 @@ void test_create_users_types_cli_failure_too_many_players(void) {
   game_config_ptr game_config, received;
   size_t i;
 
+  app_malloc_ExpectAndReturn(game_config_expect_size, game_config_mock);
+
   game_config = create_game_config();
 
-  create_users_types_mock();
+  app_malloc_ExpectAndReturn(users_types_expect_size, users_types_mock);
   app_free_Expect(users_types_mock);
 
   for (i = 0; i < sizeof(user_value) / sizeof(char *); i++) {
@@ -102,6 +110,8 @@ void test_create_users_types_cli_failure_too_many_players(void) {
 void test_create_users_types_cli_failure_oom(void) {
   char user_value[] = {"human"};
   game_config_ptr game_config, received;
+
+  app_malloc_ExpectAndReturn(game_config_expect_size, game_config_mock);
 
   game_config = create_game_config();
 

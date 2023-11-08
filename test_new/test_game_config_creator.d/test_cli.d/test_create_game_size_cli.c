@@ -1,9 +1,11 @@
 /*******************************************************************************
  *    IMPORTS
  ******************************************************************************/
-// Test framework
 #include <stddef.h>
 #include <string.h>
+
+// Test framework
+#include "mock_std_lib_interface.h"
 #include <unity.h>
 
 // App
@@ -20,7 +22,9 @@
  ******************************************************************************/
 void setUp() {
   set_up_loggers();
+
   create_game_config_mock();
+  app_malloc_ExpectAndReturn(game_config_expect_size, game_config_mock);
 }
 
 void tearDown() {

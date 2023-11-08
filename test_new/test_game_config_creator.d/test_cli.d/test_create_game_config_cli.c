@@ -24,7 +24,11 @@
  ******************************************************************************/
 void setUp() {
   set_up_loggers();
+
   create_game_config_mock();
+  app_malloc_ExpectAndReturn(game_config_expect_size, game_config_mock);
+
+  create_users_types_mock();
 }
 
 void tearDown() {
@@ -43,7 +47,9 @@ void test_create_game_config_cli_size_short_success(void) {
 
   game_config_ptr game_config;
 
-  game_config = create_game_config_cli(argc, argv);
+  game_config = create_game_config();
+
+  game_config = create_game_config_cli(argc, argv, game_config);
 
   TEST_ASSERT_NOT_NULL(game_config);
 
@@ -56,7 +62,9 @@ void test_create_game_config_cli_size_long_success(void) {
 
   game_config_ptr game_config;
 
-  game_config = create_game_config_cli(argc, argv);
+  game_config = create_game_config();
+
+  game_config = create_game_config_cli(argc, argv, game_config);
 
   TEST_ASSERT_NOT_NULL(game_config);
 
@@ -69,7 +77,9 @@ void test_create_game_config_cli_difficulty_short_success(void) {
 
   game_config_ptr game_config;
 
-  game_config = create_game_config_cli(argc, argv);
+  game_config = create_game_config();
+
+  game_config = create_game_config_cli(argc, argv, game_config);
 
   TEST_ASSERT_NOT_NULL(game_config);
 
@@ -82,7 +92,9 @@ void test_create_game_config_cli_difficulty_long_success(void) {
 
   game_config_ptr game_config;
 
-  game_config = create_game_config_cli(argc, argv);
+  game_config = create_game_config();
+
+  game_config = create_game_config_cli(argc, argv, game_config);
 
   TEST_ASSERT_NOT_NULL(game_config);
 
@@ -98,8 +110,10 @@ void test_create_game_config_cli_users_types_short_success(void) {
   user_type_t *received;
   size_t i;
 
-  create_users_types_mock();
-  game_config = create_game_config_cli(argc, argv);
+  game_config = create_game_config();
+
+  app_malloc_ExpectAndReturn(users_types_expect_size, users_types_mock);
+  game_config = create_game_config_cli(argc, argv, game_config);
 
   TEST_ASSERT_NOT_NULL(game_config);
   TEST_ASSERT_EQUAL(2, get_game_config_users_amount(game_config));
@@ -122,8 +136,10 @@ void test_create_game_config_cli_e2e_success(void) {
   game_config_ptr game_config;
   size_t i;
 
-  create_users_types_mock();
-  game_config = create_game_config_cli(argc, argv);
+  game_config = create_game_config();
+
+  app_malloc_ExpectAndReturn(users_types_expect_size, users_types_mock);
+  game_config = create_game_config_cli(argc, argv, game_config);
 
   TEST_ASSERT_NOT_NULL(game_config);
 

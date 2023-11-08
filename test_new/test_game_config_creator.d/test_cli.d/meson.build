@@ -25,6 +25,7 @@ test_create_game_size_cli_file = files('test_create_game_size_cli.c')
 test_create_game_size_cli_exe = executable('test_create_game_size_cli',
   sources: [
     test_create_game_size_cli_file,
+    std_lib_mock,
     cmock_gen_runner.process(test_create_game_size_cli_file),
   ],
   include_directories: app_src_dirs,
@@ -46,6 +47,7 @@ test_create_game_difficulty_cli_file = files('test_create_game_difficulty_cli.c'
 test_create_game_difficulty_cli_exe = executable('test_create_game_difficulty_cli',
   sources: [
     test_create_game_difficulty_cli_file,
+    std_lib_mock,
     cmock_gen_runner.process(test_create_game_difficulty_cli_file),
   ],
   include_directories: app_src_dirs,

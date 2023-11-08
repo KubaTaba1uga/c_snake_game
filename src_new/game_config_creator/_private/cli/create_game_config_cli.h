@@ -9,6 +9,7 @@
 /*******************************************************************************
  *    API
  ******************************************************************************/
-game_config_ptr create_game_config_cli(int argc, char *argv[]);
+game_config_ptr create_game_config_cli(int argc, char *argv[],
+                                       game_config_ptr game_config);
 
 #endif
