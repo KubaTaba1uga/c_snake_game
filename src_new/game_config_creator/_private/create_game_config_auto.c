@@ -1,3 +1,6 @@
+// TO-DO add defaults as seperate step
+// TO-DO validate game config as seperate step
+
 /*******************************************************************************
  *    IMPORTS
  ******************************************************************************/
@@ -11,6 +14,7 @@
 #include "../../interfaces/std_lib_interface.h"
 #include "../../proj_config/error.h"
 #include "../../utils/logging_utils.h"
+#include "../game_config_creator.h"
 #include "cli/create_game_config_cli.h"
 
 /*******************************************************************************
@@ -35,8 +39,6 @@ static const size_t creation_f_size =
  ******************************************************************************/
 
 game_config_ptr create_game_config_auto(int argc, char *argv[]) {
-  // TO-DO game config needs to be shared among creator functions
-
   game_config_ptr game_config;
   void *received;
 

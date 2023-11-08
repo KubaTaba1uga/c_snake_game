@@ -1,5 +1,5 @@
-#ifndef _game_config_h
-#define _game_config_h
+#ifndef _game_config_creator_h
+#define _game_config_creator_h
 
 /*******************************************************************************
  *    IMPORTS
