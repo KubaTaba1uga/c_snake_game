@@ -7,3 +7,5 @@ proj_config_module = static_library(
   proj_config_sources,
   name_prefix: ''
 )
+
+app_modules += proj_config_module

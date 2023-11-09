@@ -19,3 +19,4 @@ utils_module = static_library(
 )
 
 
+app_modules += utils_module

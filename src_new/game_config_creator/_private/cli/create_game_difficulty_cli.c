@@ -19,7 +19,7 @@
 /*******************************************************************************
  *    DATA
  ******************************************************************************/
-static const char file_id[] = "create_game_config_difficulty_cli";
+static const char file_id[] = "create_game_difficulty_cli";
 static const char *valid_user_values[] = {"easy", "medium", "hard"};
 static const game_difficulty_t user_values_difficulty_map[] = {EASY, MEDIUM,
                                                                HARD};
@@ -45,9 +45,11 @@ game_config_ptr create_game_difficulty_cli(game_config_ptr game_config,
   local_game_config = _create_game_difficulty_cli(game_config, value);
 
   if (!local_game_config) {
+
     switch (errno) {
 
     case ERROR_INVALID_USER_INPUT:
+
       log_warning(
           (char *)file_id,
           "Cannot create game difficulty based on CLI value `%s`. Setting "

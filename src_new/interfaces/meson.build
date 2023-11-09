@@ -11,3 +11,4 @@ interfaces_module = static_library(
 )
 
 
+app_modules += interfaces_module

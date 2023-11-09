@@ -21,3 +21,5 @@ game_config_module = static_library(
   dependencies: game_config_deps,
   name_prefix: '',
 )
+
+app_modules += game_config_module

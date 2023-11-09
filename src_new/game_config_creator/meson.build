@@ -15,3 +15,5 @@ game_config_creator_module = static_library(
   dependencies: game_config_creator_deps,
   name_prefix: ''
 )
+
+app_modules += game_config_creator_module

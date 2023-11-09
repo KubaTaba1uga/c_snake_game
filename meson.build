@@ -31,9 +31,9 @@ logging_dep = logging_proj.dependency('stumpless')
 # app_deps = [logging_dep]
 # subdir('src')
 
-# main = executable('main', global_sources, dependencies: app_deps, link_with: main_module)
-subdir('src_new')
 
+subdir('src_new')
+main = executable('main', link_with: main_module)
 # ******************************************************************************
 # *    Tests
 # ******************************************************************************
