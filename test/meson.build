@@ -2,7 +2,7 @@
 # PATHS
 ###############
 _scripts = join_paths('..', 'scripts')
-_src = join_paths('..', 'src_new')
+_src = join_paths('..', 'src')
 _src_dir = include_directories(_src)
 
 app_src_dirs = [_src_dir]
