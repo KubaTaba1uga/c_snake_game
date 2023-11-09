@@ -6,18 +6,28 @@
 
 #include "str_utils.h"
 
-char *lower_str(char *str) {
-
+void lower_str(char *str) {
   for (int i = 0; str[i]; i++) {
     str[i] = tolower(str[i]);
   }
-
-  return str;
 }
 
 bool are_strs_eq(char *src, char *target) { return (strcmp(src, target) == 0); }
 
-char *cut_str(char *str, size_t i) {
-  str[i] = 0;
-  return str;
+void cut_str(char *str, size_t i) { str[i] = 0; }
+
+void remove_spaces(char *s) {
+  char *tmp = s;
+
+  while (*tmp != 0) {
+    while (*tmp == ' ') {
+      tmp++;
+    }
+
+    *s++ = *tmp++;
+  }
+
+  *s = 0;
+
+  return;
 }

@@ -4,8 +4,12 @@
 #include <stdbool.h>
 #include <stddef.h>
 
-char *lower_str(char *str);
+void lower_str(char *str);
 
 bool are_strs_eq(char *src, char *target);
-char *cut_str(char *str, size_t i);
+
+void cut_str(char *str, size_t i);
+
+void remove_spaces(char *str);
+
 #endif

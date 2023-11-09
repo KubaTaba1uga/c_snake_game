@@ -8,10 +8,11 @@
 #include <stdlib.h>
 #include <stumpless.h>
 
-// App's data
-#include "../config.h"
+// App
 #include "../interfaces/std_lib_interface.h"
-#include "stumpless/severity.h"
+#include "../proj_config/constant.h"
+#include "../proj_config/error.h"
+
 /*******************************************************************************
  *    MACROS
  ******************************************************************************/
@@ -24,8 +25,8 @@
 /*******************************************************************************
  *    PRIVATE DECLARATIONS
  ******************************************************************************/
-struct stumpless_target *loggers[] = {NULL};
-size_t loggers_no = sizeof(loggers) / sizeof(struct stumpless_target *);
+static struct stumpless_target *loggers[] = {NULL};
+static size_t loggers_no = sizeof(loggers) / sizeof(struct stumpless_target *);
 
 inline void log_msg(char *msg, char *msg_id, enum stumpless_severity severity);
 inline void create_log_entry(char *msg, char *msg_id,
@@ -45,7 +46,8 @@ void destroy_loggers(void) {
   size_t i;
 
   for (i = 0; i < loggers_no; i++) {
-    stumpless_close_target(loggers[i]);
+    if (loggers[i])
+      stumpless_close_target(loggers[i]);
   }
 
   stumpless_free_all();

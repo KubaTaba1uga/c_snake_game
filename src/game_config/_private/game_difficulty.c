@@ -1,13 +1,41 @@
+/*******************************************************************************
+ *    IMPORTS
+ ******************************************************************************/
+// C standard library
+#include <stddef.h>
+
+// App
 #include "../game_difficulty.h"
 
-const char *game_difficulty_s[] = {"easy", "medium", "hard"};
+/*******************************************************************************
+ *    PRIVATE DATA
+ ******************************************************************************/
+static const char *const GAME_DIFFICULTY_STRINGS[] = {
+    // 0
+    "Easy",
 
-const char default_difficulty_text[] = "unrecognized";
+    // 1
+    "Medium",
+
+    // 2
+    "Hard",
+
+};
+
+static const size_t GAME_DIFFICULTY_STRINGS_LEN =
+    sizeof(GAME_DIFFICULTY_STRINGS) / sizeof(char *);
+
+/*******************************************************************************
+ *    PUBLIC API
+ ******************************************************************************/
 
 const char *str_game_difficulty(game_difficulty_t game_difficulty) {
-  if (game_difficulty < 0 ||
-      game_difficulty > sizeof(game_difficulty_s) / sizeof(char *))
-    return default_difficulty_text;
+  if ( // Upper bound
+      (game_difficulty >= GAME_DIFFICULTY_ENUM_LEN) ||
+      (game_difficulty >= GAME_DIFFICULTY_STRINGS_LEN) ||
+      // Lower bound
+      (game_difficulty < 0))
+    return NULL;
 
-  return game_difficulty_s[game_difficulty];
+  return GAME_DIFFICULTY_STRINGS[game_difficulty];
 }

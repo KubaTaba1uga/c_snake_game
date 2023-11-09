@@ -1,20 +1,25 @@
-game_config_sources = files(['game_config.h', 
-                           'game_type.h',
+game_config_sources = files('game_config.h', 
                            'game_size.h', 
                            'game_difficulty.h',
-                           'create_game_config.h'
-                          ])
-game_config_sources += global_sources
+                           'user_type.h',
+                           )
 
 subdir('_private')
 
-game_config_module = library(
-  'game_config',
-  game_config_sources,
-  link_with: [user_module, interfaces_module, utils_module],
-  name_prefix: '',
-  name_suffix: 'module'
-             
+game_config_links = [
+  interfaces_module,
+  proj_config_module
+]
+
+game_config_deps = declare_dependency(
+  link_with: game_config_links
 )
 
-app_modules += [game_config_module]
+game_config_module = static_library(
+  'game_config_module',
+  game_config_sources,
+  dependencies: game_config_deps,
+  name_prefix: '',
+)
+
+app_modules += game_config_module

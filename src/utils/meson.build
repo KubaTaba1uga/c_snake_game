@@ -4,10 +4,19 @@ utils_sources = files(
   'str_utils.c', 'str_utils.h',  
 )
 
-utils_module = shared_library(
-  'utils_module',
-  utils_sources,
-  dependencies: [logging_dep]
+utils_objects = [proj_config_module.extract_all_objects()]
+
+utils_deps = declare_dependency(
+  dependencies: [logging_dep],
 )
 
-app_modules += [utils_module]
+utils_module = static_library(
+  'utils_module',
+  utils_sources,
+  objects: utils_objects,
+  dependencies: utils_deps,
+  name_prefix: ''
+)
+
+
+app_modules += utils_module
