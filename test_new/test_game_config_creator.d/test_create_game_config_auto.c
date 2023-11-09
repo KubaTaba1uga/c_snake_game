@@ -12,14 +12,17 @@
 #include "../utils/game_config_test_utils.h"
 #include "../utils/utils_test_utils.h"
 #include "test_cli.d/test_create_game_config_cli.p/mock_std_lib_interface.h"
+#include "test_cli.d/test_create_game_size_cli.p/mock_std_lib_interface.h"
 
 static game_config_ptr game_config_mock;
+static game_config_ptr default_game_config_mock;
 
 void setUp() {
   set_up_loggers();
 
   game_config_mock = create_game_config_mock();
-  app_malloc_ExpectAndReturn(game_config_expect_size, game_config_mock);
+
+  default_game_config_mock = create_game_config_mock();
 
   create_users_types_mock();
 }
@@ -40,7 +43,11 @@ void test_create_game_config_auto_success(void) {
   game_config_ptr game_config;
   size_t i;
 
+  app_malloc_ExpectAndReturn(game_config_expect_size, game_config_mock);
   app_malloc_ExpectAndReturn(users_types_expect_size, users_types_mock);
+  app_malloc_ExpectAndReturn(game_config_expect_size, default_game_config_mock);
+
+  app_free_Expect(default_game_config_mock);
 
   game_config = create_game_config_auto(argc, argv);
 
@@ -60,12 +67,16 @@ void test_create_game_config_auto_success(void) {
   }
 }
 
-void test_create_game_config_auto_all_failed_failure(void) {
-  char *argv[] = {"exec_path", "-u"};
+void test_create_game_config_auto_wrong_value_failure(void) {
+  char *argv[] = {"exec_path", "-u", "lubiePingwiny"};
   int argc = sizeof(argv) / sizeof(char *);
 
   game_config_ptr game_config;
 
+  app_malloc_ExpectAndReturn(game_config_expect_size, game_config_mock);
+  app_malloc_ExpectAndReturn(game_config_expect_size, default_game_config_mock);
+
+  app_free_Expect(default_game_config_mock);
   app_free_Expect(game_config_mock);
 
   game_config = create_game_config_auto(argc, argv);
@@ -79,6 +90,10 @@ void test_create_game_config_auto_validation_failure(void) {
 
   game_config_ptr game_config;
 
+  app_malloc_ExpectAndReturn(game_config_expect_size, game_config_mock);
+  app_malloc_ExpectAndReturn(game_config_expect_size, default_game_config_mock);
+
+  app_free_Expect(default_game_config_mock);
   app_free_Expect(game_config_mock);
 
   game_config = create_game_config_auto(argc, argv);
