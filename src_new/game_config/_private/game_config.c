@@ -12,15 +12,12 @@
 #include "../game_config.h"
 #include "../game_difficulty.h"
 #include "../game_size.h"
-#include "../game_type.h"
 #include "../user_type.h"
 
 /*******************************************************************************
  *    DATA
  ******************************************************************************/
 struct game_config {
-  game_type_t type;
-
   game_difficulty_t difficulty;
 
   game_size_t size;
@@ -43,7 +40,6 @@ game_config_ptr create_game_config(void) {
     goto ERROR;
   }
 
-  local_game_config->type = ENUM_INVALID;
   local_game_config->difficulty = ENUM_INVALID;
   local_game_config->size = ENUM_INVALID;
   local_game_config->users_amount = 0;
@@ -56,14 +52,6 @@ ERROR:
 }
 
 void destroy_game_config(game_config_ptr game_config) { app_free(game_config); }
-
-game_type_t get_game_config_type(game_config_ptr game_config) {
-  return game_config->type;
-}
-
-void set_game_config_type(game_config_ptr game_config, game_type_t game_type) {
-  game_config->type = game_type;
-}
 
 game_difficulty_t get_game_config_difficulty(game_config_ptr game_config) {
   return game_config->difficulty;

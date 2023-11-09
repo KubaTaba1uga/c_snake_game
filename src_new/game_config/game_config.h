@@ -10,7 +10,6 @@
 // App
 #include "game_difficulty.h"
 #include "game_size.h"
-#include "game_type.h"
 #include "user_type.h"
 
 /*******************************************************************************
@@ -20,9 +19,6 @@ typedef struct game_config *game_config_ptr;
 
 game_config_ptr create_game_config(void);
 void destroy_game_config(game_config_ptr game_config);
-
-game_type_t get_game_config_type(game_config_ptr game_config);
-void set_game_config_type(game_config_ptr game_config, game_type_t game_type);
 
 game_difficulty_t get_game_config_difficulty(game_config_ptr game_config);
 void set_game_config_difficulty(game_config_ptr game_config,

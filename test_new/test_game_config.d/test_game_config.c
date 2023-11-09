@@ -15,7 +15,6 @@
 #include "game_config/game_config.h"
 #include "game_config/game_difficulty.h"
 #include "game_config/game_size.h"
-#include "game_config/game_type.h"
 #include "game_config/user_type.h"
 #include "proj_config/constant.h"
 
@@ -45,7 +44,6 @@ void test_create_game_config(void) {
   TEST_ASSERT_NOT_NULL(game_config);
   TEST_ASSERT_NULL(game_config->users_types);
   TEST_ASSERT_EQUAL(0, game_config->users_amount);
-  TEST_ASSERT_EQUAL(ENUM_INVALID, game_config->type);
   TEST_ASSERT_EQUAL(ENUM_INVALID, game_config->size);
   TEST_ASSERT_EQUAL(ENUM_INVALID, game_config->difficulty);
 }
@@ -58,19 +56,6 @@ void test_destroy_game_config(void) {
   app_free_Expect(game_config);
 
   destroy_game_config(game_config);
-}
-
-void test_get_game_config_type(void) {
-  game_config_ptr game_config;
-  game_type_t game_type;
-
-  game_config = create_game_config();
-
-  game_config->type = LOCAL;
-
-  game_type = get_game_config_type(game_config);
-
-  TEST_ASSERT_GAME_TYPE(LOCAL, game_type);
 }
 
 void test_get_game_config_difficulty(void) {
@@ -126,16 +111,6 @@ void test_get_game_config_users_types(void) {
 
   for (i = 0; i < sizeof(expected_users_types) / sizeof(user_type_t); i++)
     TEST_ASSERT_USER_TYPE(expected_users_types[i], users_types[i]);
-}
-
-void test_set_game_config_type(void) {
-  game_config_ptr game_config;
-
-  game_config = create_game_config();
-
-  set_game_config_type(game_config, LOCAL);
-
-  TEST_ASSERT_GAME_TYPE(LOCAL, game_config->type);
 }
 
 void test_set_game_config_difficulty(void) {

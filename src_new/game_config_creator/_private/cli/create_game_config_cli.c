@@ -15,7 +15,6 @@
 #include "../../../game_config/game_config.h"
 #include "../../../game_config/game_difficulty.h"
 #include "../../../game_config/game_size.h"
-#include "../../../game_config/game_type.h"
 #include "../../../game_config/user_type.h"
 #include "../../../interfaces/std_lib_interface.h"
 #include "../../../utils/logging_utils.h"
