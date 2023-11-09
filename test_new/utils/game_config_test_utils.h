@@ -8,11 +8,10 @@
 
 #include <stddef.h>
 
-extern game_config_ptr game_config_mock;
 extern size_t game_config_expect_size;
 
-void create_game_config_mock(void);
-void destroy_game_config_mock(void);
+game_config_ptr create_game_config_mock(void);
+void destroy_game_config_mock(game_config_ptr game_config);
 
 void TEST_ASSERT_GAME_DIFFICULTY(game_difficulty_t expected,
                                  game_difficulty_t recived);

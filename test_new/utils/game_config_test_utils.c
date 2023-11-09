@@ -6,6 +6,7 @@
 #include <stdlib.h>
 
 // Test framework
+#include "game_config/game_config.h"
 #include "mock_std_lib_interface.h"
 #include <unity.h>
 
@@ -20,25 +21,28 @@
 /*******************************************************************************
  *    API
  ******************************************************************************/
-game_config_ptr game_config_mock = NULL;
+
 size_t game_config_expect_size = 0;
 
-void create_game_config_mock(void) {
+game_config_ptr create_game_config_mock(void) {
+  game_config_ptr game_config_mock = NULL;
+
   game_config_expect_size = sizeof(struct game_config);
 
   game_config_mock = malloc(game_config_expect_size);
 
   if (!game_config_mock)
     TEST_FAIL_MESSAGE("Unable to allocate memory for game config mock.");
+
+  return game_config_mock;
 }
 
-void destroy_game_config_mock(void) {
+void destroy_game_config_mock(game_config_ptr game_config_mock) {
   if (game_config_mock) {
     free(game_config_mock);
   }
 
   game_config_expect_size = 0;
-  game_config_mock = NULL;
 }
 
 void TEST_ASSERT_GAME_DIFFICULTY(game_difficulty_t expected,

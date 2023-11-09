@@ -16,6 +16,7 @@
 #include "../../utils/logging_utils.h"
 #include "../game_config_creator.h"
 #include "cli/create_game_config_cli.h"
+#include "validate_game_config.h"
 
 /*******************************************************************************
  *    PRIVATE DECLARATIONS
@@ -30,6 +31,9 @@ static const char file_id[] = "create_game_config_auto";
 static game_config_ptr (*const creation_functions[])(
     int argc, char **argv, game_config_ptr game_conifg) = {
     create_game_config_cli,
+    // Validation has to be the last function in an array.
+    // If validation failed it means that creation failed also.
+    validate_game_config_auto,
 };
 static const size_t creation_f_size =
     sizeof(creation_functions) / sizeof(void *);
@@ -72,23 +76,19 @@ game_config_ptr _create_game_config_auto(int argc, char **argv,
                                          game_config_ptr game_config) {
   game_config_ptr (*creation_function)(int argc, char **argv,
                                        game_config_ptr game_config);
-  size_t i, failure_counter;
+  size_t i;
   void *received;
-
-  failure_counter = 0;
 
   for (i = 0; i < creation_f_size; i++) {
     creation_function = creation_functions[i];
 
     received = creation_function(argc, argv, game_config);
 
-    if (!received)
-      failure_counter++;
-    else
+    if (received)
       game_config = received;
   }
 
-  if (failure_counter == creation_f_size) {
+  if (!received) {
     return NULL;
   }
 

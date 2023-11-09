@@ -13,17 +13,19 @@
 #include "../utils/utils_test_utils.h"
 #include "test_cli.d/test_create_game_config_cli.p/mock_std_lib_interface.h"
 
+static game_config_ptr game_config_mock;
+
 void setUp() {
   set_up_loggers();
 
-  create_game_config_mock();
+  game_config_mock = create_game_config_mock();
   app_malloc_ExpectAndReturn(game_config_expect_size, game_config_mock);
 
   create_users_types_mock();
 }
 
 void tearDown() {
-  destroy_game_config_mock();
+  destroy_game_config_mock(game_config_mock);
   destroy_users_types_mock();
   tear_down_loggers();
 }

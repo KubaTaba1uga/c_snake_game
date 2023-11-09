@@ -22,14 +22,19 @@
 #include "../utils/game_config_test_utils.h"
 
 /*******************************************************************************
+ *    DATA
+ ******************************************************************************/
+static game_config_ptr game_config_mock;
+
+/*******************************************************************************
  *    SETUP, TEARDOWN
  ******************************************************************************/
 void setUp() {
-  create_game_config_mock();
+  game_config_mock = create_game_config_mock();
   app_malloc_ExpectAndReturn(game_config_expect_size, game_config_mock);
 }
 
-void tearDown() { destroy_game_config_mock(); }
+void tearDown() { destroy_game_config_mock(game_config_mock); }
 
 /*******************************************************************************
  *    TESTS
