@@ -26,6 +26,12 @@ logging_proj = cmake.subproject('stumpless', options: opt_var)
 logging_dep = logging_proj.dependency('stumpless')
 
 # ******************************************************************************
+# *    zeromq
+# ******************************************************************************
+libzmq_dep = dependency('libzmq', required: true)
+czmq_dep = dependency('libczmq', required: true)
+
+# ******************************************************************************
 # *    App
 # ******************************************************************************
 subdir('src')

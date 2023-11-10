@@ -10,7 +10,7 @@ fi
 case "$OS" in
     *"Debian GNU/Linux"*)
 	sudo apt update
-	sudo apt install ruby-full
+	sudo apt install ruby-full -y
 
 	if ! command -v bundle &> /dev/null
 	then
