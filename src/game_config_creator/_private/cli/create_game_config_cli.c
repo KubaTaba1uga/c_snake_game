@@ -3,6 +3,7 @@
  ******************************************************************************/
 // C standard library
 #include <ctype.h>
+#include <errno.h>
 #include <getopt.h>
 #include <stdbool.h>
 #include <stddef.h>
@@ -17,6 +18,7 @@
 #include "../../../game_config/game_size.h"
 #include "../../../game_config/user_type.h"
 #include "../../../interfaces/std_lib_interface.h"
+#include "../../../proj_config/error.h"
 #include "../../../utils/logging_utils.h"
 #include "create_game_difficulty_cli.h"
 #include "create_game_size_cli.h"
@@ -35,6 +37,8 @@ static void init_getopt_fmt(size_t n, struct option options[n]);
 /*******************************************************************************
  *    DATA
  ******************************************************************************/
+static const char *file_id = "create_game_config_cli";
+
 static struct option getopt_options[] = {
     {"size", required_argument, 0, 's'},
     {"difficulty", required_argument, 0, 'd'},
@@ -59,7 +63,8 @@ game_config_ptr create_game_config_cli(int argc, char *argv[],
                                        game_config_ptr game_config) {
   game_config_ptr (*creation_function)(game_config_ptr game_config,
                                        char *value);
-  int getopt_flag, option_i;
+  int option_i;
+  char getopt_flag;
 
   // Optind reset is required so function can be
   //  executed multiple times. Without the reset
@@ -79,32 +84,41 @@ game_config_ptr create_game_config_cli(int argc, char *argv[],
     option_i = get_option_i(getopt_flag);
 
     if (option_i < 0) {
-      // TO-DO set errno to unknown option
-      // TO-DO log messgae
-      // TO-DO print to stdout
-      return NULL;
+      if (optopt)
+        log_error((char *)file_id, "Cannot recognize option %c", optopt);
+      else
+        log_error((char *)file_id, "Cannot recognize option %s",
+                  argv[optind - 1]);
+
+      errno = ERROR_CLI_INVALID_OPTION;
+
+      goto ERROR;
     }
 
     creation_function = get_creation_function(option_i);
 
     if (!creation_function) {
-      // TO-DO set errno to unknown option
-      // TO-DO log messgae
-      // TO-DO print to stdout
-      return NULL;
+      errno = ERROR_GAME_CONFIG_CREATION_FAILURE;
+
+      log_error((char *)file_id, "Cannot find creation function for %c",
+                (char)getopt_flag);
+
+      goto ERROR;
     }
 
     game_config = creation_function(game_config, optarg);
 
     if (!game_config) {
-      // TO-DO set errno to cli creation failed
-      // TO-DO log messgae
-      // TO-DO print to stdout
-      return NULL;
+      // Creation function logs it's errors
+      //  and sets it's errnos.
+      goto ERROR;
     }
   }
 
   return game_config;
+
+ERROR:
+  return NULL;
 }
 
 /*******************************************************************************

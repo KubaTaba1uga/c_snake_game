@@ -42,6 +42,10 @@ void init_loggers(void) {
   loggers[0] = stumpless_open_stdout_target("console logger");
 }
 
+void init_cli_loggers(void) {
+  loggers[0] = stumpless_open_stdout_target("console logger");
+}
+
 void destroy_loggers(void) {
   size_t i;
 

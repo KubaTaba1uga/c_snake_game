@@ -49,7 +49,6 @@ game_config_ptr create_game_difficulty_cli(game_config_ptr game_config,
     switch (errno) {
 
     case ERROR_INVALID_USER_INPUT:
-
       log_warning(
           (char *)file_id,
           "Cannot create game difficulty based on CLI value `%s`. Setting "
