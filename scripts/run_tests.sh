@@ -8,5 +8,5 @@ then
     builddir="build"
 fi
 
-meson test $test_name -C $builddir && \
+meson test $test_name -C $builddir $3
 cat $builddir/meson-logs/testlog.txt

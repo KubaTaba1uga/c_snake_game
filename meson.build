@@ -2,7 +2,7 @@
 # ******************************************************************************
 # *    Project
 # ******************************************************************************
-project('c_project_template', 'c',
+project('c_snake_game', 'c',
          version: '0.0.1',
 	 meson_version: '>=1.0.1',
 	 default_options: [
@@ -28,10 +28,8 @@ logging_dep = logging_proj.dependency('stumpless')
 # ******************************************************************************
 # *    App
 # ******************************************************************************
-app_deps = [logging_dep]
 subdir('src')
-
-main = executable('main', sources, dependencies: app_deps)
+main = executable('main', link_with: main_module)
 
 # ******************************************************************************
 # *    Tests

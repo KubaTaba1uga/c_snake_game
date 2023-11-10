@@ -8,9 +8,11 @@
 #include <stdlib.h>
 #include <stumpless.h>
 
-// App's data
-#include "../config.h"
+// App
 #include "../interfaces/std_lib_interface.h"
+#include "../proj_config/constant.h"
+#include "../proj_config/error.h"
+
 /*******************************************************************************
  *    MACROS
  ******************************************************************************/
@@ -23,8 +25,8 @@
 /*******************************************************************************
  *    PRIVATE DECLARATIONS
  ******************************************************************************/
-struct stumpless_target *loggers[] = {NULL};
-size_t loggers_no = sizeof(loggers) / sizeof(struct stumpless_target *);
+static struct stumpless_target *loggers[] = {NULL};
+static size_t loggers_no = sizeof(loggers) / sizeof(struct stumpless_target *);
 
 inline void log_msg(char *msg, char *msg_id, enum stumpless_severity severity);
 inline void create_log_entry(char *msg, char *msg_id,
@@ -40,11 +42,16 @@ void init_loggers(void) {
   loggers[0] = stumpless_open_stdout_target("console logger");
 }
 
+void init_cli_loggers(void) {
+  loggers[0] = stumpless_open_stdout_target("console logger");
+}
+
 void destroy_loggers(void) {
   size_t i;
 
   for (i = 0; i < loggers_no; i++) {
-    stumpless_close_target(loggers[i]);
+    if (loggers[i])
+      stumpless_close_target(loggers[i]);
   }
 
   stumpless_free_all();
@@ -56,6 +63,22 @@ void log_info(char *msg_id, char *fmt, ...) {
   GET_VA_CHAR_ARGS(local_log_entry, sizeof(local_log_entry));
 
   log_msg(local_log_entry, msg_id, STUMPLESS_SEVERITY_INFO);
+}
+
+void log_error(char *msg_id, char *fmt, ...) {
+  char local_log_entry[255];
+
+  GET_VA_CHAR_ARGS(local_log_entry, sizeof(local_log_entry));
+
+  log_msg(local_log_entry, msg_id, STUMPLESS_SEVERITY_ERR);
+}
+
+void log_warning(char *msg_id, char *fmt, ...) {
+  char local_log_entry[255];
+
+  GET_VA_CHAR_ARGS(local_log_entry, sizeof(local_log_entry));
+
+  log_msg(local_log_entry, msg_id, STUMPLESS_SEVERITY_WARNING);
 }
 
 /*******************************************************************************
