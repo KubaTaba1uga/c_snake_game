@@ -29,6 +29,7 @@ void setUp() {
 
 void tearDown() {
   destroy_game_config_mock(game_config_mock);
+  destroy_game_config_mock(default_game_config_mock);
   destroy_users_types_mock();
   tear_down_loggers();
 }

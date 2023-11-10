@@ -59,7 +59,6 @@ game_config_ptr create_game_config_auto(int argc, char *argv[]) {
     // Detailed error logs should be provided by creation function.
     app_free(game_config);
     errno = ERROR_GAME_CONFIG_CREATION_FAILURE;
-    log_error((char *)file_id, "Game config creation failed");
     goto ERROR;
   }
 
