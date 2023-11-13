@@ -15,7 +15,7 @@ game_config_deps = declare_dependency(
   link_with: game_config_links
 )
 
-game_config_module = static_library(
+game_config_module = shared_library(
   'game_config_module',
   game_config_sources,
   dependencies: game_config_deps,

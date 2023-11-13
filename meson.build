@@ -26,10 +26,17 @@ logging_proj = cmake.subproject('stumpless', options: opt_var)
 logging_dep = logging_proj.dependency('stumpless')
 
 # ******************************************************************************
-# *    zeromq
+# *    Lists
 # ******************************************************************************
-libzmq_dep = dependency('libzmq', required: true)
-czmq_dep = dependency('libczmq', required: true)
+
+lists_proj = subproject('c_lists', default_options: 'enable_tests=false')
+lists_dep = lists_proj.get_variable('c_lists')
+
+# # ******************************************************************************
+# # *    zeromq
+# # ******************************************************************************
+# libzmq_dep = dependency('libzmq', required: true)
+# czmq_dep = dependency('libczmq', required: true)
 
 # ******************************************************************************
 # *    App

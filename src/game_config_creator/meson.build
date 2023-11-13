@@ -4,12 +4,13 @@ subdir('_private')
 
 game_config_creator_links = [game_config_module]
 game_config_creator_links += utils_module
+game_config_creator_links += interfaces_module
 
 game_config_creator_deps = declare_dependency(
   link_with: game_config_creator_links,
 ) 
 
-game_config_creator_module = static_library(
+game_config_creator_module = shared_library(
   'game_config_creator_module',
   game_config_creator_sources,
   dependencies: game_config_creator_deps,
