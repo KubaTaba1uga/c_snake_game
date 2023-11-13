@@ -5,6 +5,7 @@ subdir('utils')
 subdir('interfaces')
 subdir('game_config')
 subdir('game_config_creator')
+subdir('controller')
 
 main_sources = files('main.c')
 
