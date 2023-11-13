@@ -4,6 +4,8 @@ test_utils_sources = files('game_config_test_utils.h',
                            'utils_test_utils.c',
                            'game_config_creator_test_utils.c',
                            'game_config_creator_test_utils.h',
+                           'controller_test_utils.c',
+                           'controller_test_utils.h',
                           )
 
 test_utils_module = static_library('test_utils_module',
@@ -12,8 +14,9 @@ test_utils_module = static_library('test_utils_module',
    std_lib_mock,
   ],
   include_directories: [app_src_dirs],
-  dependencies: test_dependencies,
+  dependencies: [test_dependencies, lists_dep],
   link_with: [game_config_module,
+              controller_module,
               utils_module],
   link_args: [
     # allow static functions testing

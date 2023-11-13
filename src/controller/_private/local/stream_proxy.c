@@ -3,6 +3,7 @@
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdio.h>
+#include <stdlib.h>
 
 #include "../../../interfaces/std_lib_interface.h"
 #include "../../../proj_config/error.h"
@@ -10,14 +11,16 @@
 #include "stream_proxy.h"
 
 static arl_ptr create_stream_data(void);
+static stream_proxy_ptr reset_stream_data(stream_proxy_ptr stream_proxy);
+static void destroy_stream_data(stream_proxy_ptr stream_proxy);
 
 struct stream_proxy {
-  FILE in_stream;
+  FILE *in_stream;
   arl_ptr data;
   bool not_read;
 };
 
-stream_proxy_ptr create_stream_proxy(FILE stream) {
+stream_proxy_ptr create_stream_proxy(FILE *stream) {
   stream_proxy_ptr proxy;
 
   proxy = app_malloc(sizeof(struct stream_proxy));
@@ -39,19 +42,42 @@ void destroy_stream_proxy(stream_proxy_ptr stream_proxy) {
 }
 
 stream_proxy_ptr flush_stream_proxy(stream_proxy_ptr stream_proxy) {
-  arl_ptr list;
+  void *err;
 
-  if (!stream_proxy->data) {
-    list = create_stream_data();
+  errno = 0;
 
-    if (!list)
-      goto ERROR;
+  err = reset_stream_data(stream_proxy);
 
-    stream_proxy->data = list;
+  if (err) {
+    // TO-DO log message
+    goto ERROR;
   }
 
 ERROR:
   return NULL;
+}
+
+stream_proxy_ptr reset_stream_data(stream_proxy_ptr stream_proxy) {
+  arl_ptr list;
+
+  destroy_stream_data(stream_proxy);
+
+  list = create_stream_data();
+
+  if (!list)
+    goto ERROR;
+
+  stream_proxy->data = list;
+
+ERROR:
+  return NULL;
+}
+
+void destroy_stream_data(stream_proxy_ptr stream_proxy) {
+  if (stream_proxy->data)
+    arl_destroy(stream_proxy->data);
+
+  stream_proxy->data = NULL;
 }
 
 arl_ptr create_stream_data(void) {
