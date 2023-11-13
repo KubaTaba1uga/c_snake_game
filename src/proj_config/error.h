@@ -18,6 +18,8 @@ typedef enum {
   ERROR_TOO_MANY_USERS,
   ERROR_GAME_CONFIG_CREATION_FAILURE,
   ERROR_CLI_INVALID_OPTION,
+  ERROR_ARL,
+
   /* Enum assigns values automatically by incrementing
    *   the first value. `ERROR_ENUM_LEN` stands for number
    *   of elements in enum (aka `length`).
