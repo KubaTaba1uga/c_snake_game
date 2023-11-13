@@ -1,3 +1,4 @@
+#include <ar_list.h>
 #include <errno.h>
 #include <stdbool.h>
 #include <stdio.h>
@@ -8,6 +9,7 @@
 
 struct stream_proxy {
   FILE stream;
+
   bool not_read;
   bool not_flushed;
 };

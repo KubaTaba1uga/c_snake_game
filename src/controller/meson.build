@@ -8,10 +8,10 @@ controller_links = [
   interfaces_module,
   proj_config_module
 ]
-controller_links += lists_dep
 
 controller_deps = declare_dependency(
-  link_with: controller_links
+  link_with: controller_links,
+  dependencies: lists_dep
 )
 
 controller_module = static_library(

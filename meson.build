@@ -30,7 +30,7 @@ logging_dep = logging_proj.dependency('stumpless')
 # ******************************************************************************
 
 lists_proj = subproject('c_lists', default_options: 'enable_tests=false')
-lists_dep = lists_proj.get_variable('c_lists')
+lists_dep = lists_proj.get_variable('c_lists_dep')
 
 # # ******************************************************************************
 # # *    zeromq
