@@ -1,13 +1,15 @@
-#include <ar_list.h>
+
 #include <errno.h>
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdio.h>
 #include <stdlib.h>
 
+#include <c_lists/ar_list.h>
+#include <c_lists/cll_error.h>
+
 #include "../../../interfaces/std_lib_interface.h"
 #include "../../../proj_config/error.h"
-#include "l_error.h"
 #include "stream_proxy.h"
 
 static arl_ptr create_stream_data(void);
@@ -15,7 +17,7 @@ static stream_proxy_ptr reset_stream_data(stream_proxy_ptr stream_proxy);
 static void destroy_stream_data(stream_proxy_ptr stream_proxy);
 
 struct stream_proxy {
-  FILE *in_stream;
+  FILE *stream;
   arl_ptr data;
   bool not_read;
 };
@@ -30,7 +32,7 @@ stream_proxy_ptr create_stream_proxy(FILE *stream) {
     return NULL;
   }
 
-  proxy->in_stream = stream;
+  proxy->stream = stream;
   proxy->data = NULL;
   proxy->not_read = true;
 
@@ -38,6 +40,7 @@ stream_proxy_ptr create_stream_proxy(FILE *stream) {
 }
 
 void destroy_stream_proxy(stream_proxy_ptr stream_proxy) {
+  destroy_stream_data(stream_proxy);
   app_free(stream_proxy);
 }
 
@@ -69,6 +72,8 @@ stream_proxy_ptr reset_stream_data(stream_proxy_ptr stream_proxy) {
 
   stream_proxy->data = list;
 
+  return stream_proxy;
+
 ERROR:
   return NULL;
 }
@@ -83,13 +88,13 @@ void destroy_stream_data(stream_proxy_ptr stream_proxy) {
 arl_ptr create_stream_data(void) {
   const size_t DEFAULT_SIZE = 255;
   arl_ptr list;
-  l_error_t err;
+  cll_error_t err;
 
   err = arl_create(&list, DEFAULT_SIZE);
 
   if (err) {
     switch (err) {
-    case L_ERROR_OUT_OF_MEMORY:
+    case CLL_ERROR_OUT_OF_MEMORY:
       errno = ERROR_OOM;
       goto ERROR;
     default:

@@ -16,14 +16,13 @@ void setUp() {
     TEST_FAIL_MESSAGE("Unable to open temporary file");
 }
 
-void tearDown() { destroy_stream_proxy(stream_proxy_mock); }
+void tearDown() { destroy_stream_proxy_mock(stream_proxy_mock); }
 
 void test_flush_stream_data_success(void) {
   stream_proxy_ptr stream_proxy;
 
   app_malloc_ExpectAndReturn(stream_proxy_expect_size, stream_proxy_mock);
 
-  /* app_free_Expect(NULL); */
   stream_proxy = create_stream_proxy(tmp_file);
 
   flush_stream_proxy(stream_proxy);

@@ -31,3 +31,5 @@ stream_proxy_ptr create_stream_proxy_mock(void) {
 
   return mock;
 }
+
+void destroy_stream_proxy_mock(stream_proxy_ptr mock) { free(mock); }

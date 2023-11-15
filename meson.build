@@ -28,15 +28,8 @@ logging_dep = logging_proj.dependency('stumpless')
 # ******************************************************************************
 # *    Lists
 # ******************************************************************************
-
-lists_proj = subproject('c_lists', default_options: 'enable_tests=false')
+lists_proj = subproject('c_lists', default_options: ['enable_tests=false', 'default_library=static'])
 lists_dep = lists_proj.get_variable('c_lists_dep')
-
-# # ******************************************************************************
-# # *    zeromq
-# # ******************************************************************************
-# libzmq_dep = dependency('libzmq', required: true)
-# czmq_dep = dependency('libczmq', required: true)
 
 # ******************************************************************************
 # *    App
