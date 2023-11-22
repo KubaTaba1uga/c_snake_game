@@ -28,8 +28,10 @@ logging_dep = logging_proj.dependency('stumpless')
 # ******************************************************************************
 # *    Lists
 # ******************************************************************************
-lists_proj = subproject('c_lists', default_options: ['enable_tests=false', 'default_library=static'])
-lists_dep = lists_proj.get_variable('c_lists_dep')
+char_lists_proj = subproject('char_lists', default_options: ['enable_tests=false',
+                                                             'arl_type=char',
+                                                             'arl_prefix=chr'])
+char_lists_dep = char_lists_proj.get_variable('arl_lib_dep')
 
 # ******************************************************************************
 # *    App

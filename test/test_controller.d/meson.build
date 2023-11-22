@@ -1,7 +1,7 @@
 ##################################
 # TESTS CONFIG
 ##################################
-controller_tests_deps = [test_dependencies, lists_dep]
+controller_tests_deps = [test_dependencies, char_lists_dep]
 
 ##################################
 # TEST STREAM PROXY

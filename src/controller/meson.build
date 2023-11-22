@@ -11,7 +11,7 @@ controller_links = [
 
 controller_deps = declare_dependency(
   link_with: controller_links,
-  dependencies: lists_dep
+  dependencies: char_lists_dep
 )
 
 controller_module = static_library(
