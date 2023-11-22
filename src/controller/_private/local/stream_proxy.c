@@ -18,6 +18,7 @@ static void destroy_stream_data(stream_proxy_ptr stream_proxy);
 struct stream_proxy {
   FILE *stream;
   chr_ptr data;
+  // I do not remembner why do i need `not_read`?? xd
   bool not_read;
 };
 
@@ -43,6 +44,30 @@ void destroy_stream_proxy(stream_proxy_ptr stream_proxy) {
   app_free(stream_proxy);
 }
 
+char *read_stream_proxy(stream_proxy_ptr stream_proxy) {
+  char *data_copy = NULL;
+  chr_error err;
+
+  data_copy = malloc(chr_length(stream_proxy->data) * sizeof(char));
+  if (!data_copy) {
+    errno = ERROR_OOM;
+    return NULL;
+  }
+
+  err = chr_slice(stream_proxy->data, 0, chr_length(stream_proxy->data) - 1,
+                  data_copy);
+  if (err) {
+    free(data_copy);
+    errno = ERROR_ARL;
+    return NULL;
+  }
+
+  stream_proxy->not_read = false;
+
+  return data_copy;
+}
+
+// Substitute data with new data
 stream_proxy_ptr flush_stream_proxy(stream_proxy_ptr stream_proxy) {
   void *recived;
   char c;
@@ -69,6 +94,8 @@ stream_proxy_ptr flush_stream_proxy(stream_proxy_ptr stream_proxy) {
     errno = ERROR_ARL;
     goto ERROR;
   }
+
+  stream_proxy->not_read = true;
 
   return stream_proxy;
 

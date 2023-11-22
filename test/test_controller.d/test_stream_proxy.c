@@ -6,6 +6,7 @@
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdio.h>
+#include <string.h>
 #include <unistd.h>
 
 const char user_input[] = {'W', 'W', 'W', 'W', 'W', 'S',
@@ -59,9 +60,33 @@ void test_flush_stream_data_success(void) {
   TEST_ASSERT_NOT_NULL(stream_proxy->data);
   TEST_ASSERT_EQUAL(sizeof(user_input) / sizeof(char) + 1,
                     chr_length(stream_proxy->data));
+  TEST_ASSERT_TRUE(stream_proxy->not_read);
 
   for (i = 0; i < sizeof(user_input) / sizeof(char); i++) {
     TEST_ASSERT_EQUAL(CHR_SUCCESS, chr_get(stream_proxy->data, i, &recived));
     TEST_ASSERT_EQUAL(user_input[i], recived);
   }
+}
+
+void test_read_stream_data_success(void) {
+  stream_proxy_ptr stream_proxy;
+  char *recived;
+
+  app_malloc_ExpectAndReturn(stream_proxy_expect_size, stream_proxy_mock);
+
+  stream_proxy = create_stream_proxy(tmp_file);
+
+  TEST_ASSERT_NULL(stream_proxy->data);
+
+  stream_proxy = flush_stream_proxy(stream_proxy);
+
+  TEST_ASSERT_NOT_NULL(stream_proxy);
+
+  recived = read_stream_proxy(stream_proxy);
+
+  TEST_ASSERT_NOT_NULL(recived);
+
+  TEST_ASSERT_EQUAL_CHAR_ARRAY(user_input, recived, strlen(recived) - 1);
+  TEST_ASSERT_EQUAL_CHAR(0, recived[strlen(recived)]);
+  TEST_ASSERT_FALSE(stream_proxy->not_read);
 }
