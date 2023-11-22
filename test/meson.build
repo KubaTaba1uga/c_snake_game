@@ -23,18 +23,18 @@ cmock_gen_runner = generator(
   arguments: ['@INPUT@', '@OUTPUT@'],
 )
 
-cmock_gen_mock = generator(
-   find_program(_scripts / 'create_mock.rb'),
-   output: ['mock_@BASENAME@.c', 'mock_@BASENAME@.h', '@PLAINNAME@'],
-   arguments: ['@INPUT@', '@BUILD_DIR@'],
-)
-
 # Required by std_lib_mock
 _interfaces = join_paths(_src, 'interfaces')
 _interfaces_dir = include_directories(_interfaces)
 app_src_dirs += [_interfaces_dir]
 
-std_lib_mock = cmock_gen_mock.process(std_lib_interface_header)
+
+cmock_prog = find_program(_scripts / 'create_mock.rb')
+std_lib_mock = custom_target('std_lib_mock',
+                             output: ['mock_std_lib_interface.h', 'mock_std_lib_interface.c'],
+                             input: [std_lib_interface_header],
+                             command: [cmock_prog, std_lib_interface_header, '@OUTDIR@'],
+                           )
 
 ###############
 # SUBDIRS

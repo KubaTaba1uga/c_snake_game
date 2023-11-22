@@ -46,8 +46,7 @@ void destroy_stream_proxy(stream_proxy_ptr stream_proxy) {
 stream_proxy_ptr flush_stream_proxy(stream_proxy_ptr stream_proxy) {
   void *recived;
   char c;
-
-  errno = 0;
+  chr_error err;
 
   recived = reset_stream_data(stream_proxy);
 
@@ -57,10 +56,19 @@ stream_proxy_ptr flush_stream_proxy(stream_proxy_ptr stream_proxy) {
   }
 
   while ((c = fgetc(stream_proxy->stream)) != EOF) {
-    chr_append(stream_proxy->data, c);
+    err = chr_append(stream_proxy->data, c);
+
+    if (err) {
+      errno = ERROR_ARL;
+      goto ERROR;
+    }
   }
 
-  chr_append(stream_proxy->data, 0);
+  err = chr_append(stream_proxy->data, 0);
+  if (err) {
+    errno = ERROR_ARL;
+    goto ERROR;
+  }
 
   return stream_proxy;
 

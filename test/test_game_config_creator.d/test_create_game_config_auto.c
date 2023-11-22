@@ -11,8 +11,6 @@
 #include "../utils/game_config_creator_test_utils.h"
 #include "../utils/game_config_test_utils.h"
 #include "../utils/utils_test_utils.h"
-#include "test_cli.d/test_create_game_config_cli.p/mock_std_lib_interface.h"
-#include "test_cli.d/test_create_game_size_cli.p/mock_std_lib_interface.h"
 
 static game_config_ptr game_config_mock;
 static game_config_ptr default_game_config_mock;
