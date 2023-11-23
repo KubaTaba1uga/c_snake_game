@@ -1,5 +1,5 @@
 controller_sources += files(
-  'controller.c'
+  'controller.c', 'controller_private.h'
 )
 
 subdir('local')

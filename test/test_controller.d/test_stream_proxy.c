@@ -58,7 +58,7 @@ void test_flush_stream_data_success(void) {
 
   TEST_ASSERT_NOT_NULL(stream_proxy);
   TEST_ASSERT_NOT_NULL(stream_proxy->data);
-  TEST_ASSERT_EQUAL(sizeof(user_input) / sizeof(char) + 1,
+  TEST_ASSERT_EQUAL(sizeof(user_input) / sizeof(char),
                     chr_length(stream_proxy->data));
   TEST_ASSERT_TRUE(stream_proxy->not_read);
 
@@ -82,11 +82,13 @@ void test_read_stream_data_success(void) {
 
   TEST_ASSERT_NOT_NULL(stream_proxy);
 
-  recived = read_stream_proxy(stream_proxy);
+  char buffer[chr_length(stream_proxy->data)];
+
+  recived = read_stream_proxy(stream_proxy, buffer);
 
   TEST_ASSERT_NOT_NULL(recived);
 
-  TEST_ASSERT_EQUAL_CHAR_ARRAY(user_input, recived, strlen(recived) - 1);
-  TEST_ASSERT_EQUAL_CHAR(0, recived[strlen(recived)]);
+  TEST_ASSERT_EQUAL_CHAR_ARRAY(user_input, recived,
+                               chr_length(stream_proxy->data) - 1);
   TEST_ASSERT_FALSE(stream_proxy->not_read);
 }

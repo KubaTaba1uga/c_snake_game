@@ -1,3 +1,6 @@
+/* Controller takes user input and transforms it to form understandable by the
+ * app. */
+
 #include "../controller.h"
 #include "../../interfaces/std_lib_interface.h"
 #include "../controller_type.h"
@@ -29,16 +32,16 @@ controller_ptr create_controller(controller_type_t type) {
 
 void destroy_controller(controller_ptr controller) { app_free(controller); }
 
-controller_type_t get_controller_type(controller_ptr controller) {
+controller_type_t _get_controller_type(controller_ptr controller) {
   return controller->type;
 }
-void set_controller_type(controller_ptr controller, controller_type_t type) {
+void _set_controller_type(controller_ptr controller, controller_type_t type) {
   controller->type = type;
 }
 
-void *get_controller_private(controller_ptr controller) {
+void *_get_controller_private(controller_ptr controller) {
   return controller->private;
 }
-void set_controller_private(controller_ptr controller, void *private) {
+void _set_controller_private(controller_ptr controller, void *private) {
   controller->private = private;
 };

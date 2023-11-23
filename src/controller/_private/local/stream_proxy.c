@@ -1,4 +1,4 @@
-
+// TO-DO add logging for chr_list errors
 #include <errno.h>
 #include <stdbool.h>
 #include <stddef.h>
@@ -18,7 +18,8 @@ static void destroy_stream_data(stream_proxy_ptr stream_proxy);
 struct stream_proxy {
   FILE *stream;
   chr_ptr data;
-  // I do not remembner why do i need `not_read`?? xd
+  // Not read is required to disallow proxy users
+  //  flushing not read data. It would lead to traces.
   bool not_read;
 };
 
@@ -44,27 +45,27 @@ void destroy_stream_proxy(stream_proxy_ptr stream_proxy) {
   app_free(stream_proxy);
 }
 
-char *read_stream_proxy(stream_proxy_ptr stream_proxy) {
-  char *data_copy = NULL;
+/* Especially usefull when allocating buffer for read_stream_proxy.
+ */
+size_t get_length_proxy(stream_proxy_ptr stream_proxy) {
+  return chr_length(stream_proxy->data);
+}
+
+/* Buffer has to be bigger than list's length, otherwise behaviour is undefined.
+ */
+char *read_stream_proxy(stream_proxy_ptr stream_proxy, char buffer[]) {
   chr_error err;
 
-  data_copy = malloc(chr_length(stream_proxy->data) * sizeof(char));
-  if (!data_copy) {
-    errno = ERROR_OOM;
-    return NULL;
-  }
-
   err = chr_slice(stream_proxy->data, 0, chr_length(stream_proxy->data) - 1,
-                  data_copy);
+                  buffer);
   if (err) {
-    free(data_copy);
     errno = ERROR_ARL;
     return NULL;
   }
 
   stream_proxy->not_read = false;
 
-  return data_copy;
+  return buffer;
 }
 
 // Substitute data with new data
@@ -72,6 +73,9 @@ stream_proxy_ptr flush_stream_proxy(stream_proxy_ptr stream_proxy) {
   void *recived;
   char c;
   chr_error err;
+
+  if (stream_proxy->not_read)
+    return stream_proxy;
 
   recived = reset_stream_data(stream_proxy);
 
@@ -89,12 +93,6 @@ stream_proxy_ptr flush_stream_proxy(stream_proxy_ptr stream_proxy) {
     }
   }
 
-  err = chr_append(stream_proxy->data, 0);
-  if (err) {
-    errno = ERROR_ARL;
-    goto ERROR;
-  }
-
   stream_proxy->not_read = true;
 
   return stream_proxy;
@@ -106,6 +104,7 @@ ERROR:
 stream_proxy_ptr reset_stream_data(stream_proxy_ptr stream_proxy) {
   chr_ptr list;
 
+  // TO-DO clear instead of alloc/dealloc, should make code quicker. Is it true?
   destroy_stream_data(stream_proxy);
 
   list = create_stream_data();
