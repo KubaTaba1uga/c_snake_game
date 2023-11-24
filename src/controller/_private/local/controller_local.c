@@ -9,6 +9,8 @@
 #include <stdlib.h>
 
 static stream_proxy_ptr stream_proxy = NULL;
+static size_t counter = 0;
+static const size_t keys_mappings_limit = 3;
 
 typedef struct {
   user_value_t user_value;
@@ -20,7 +22,9 @@ typedef struct {
   size_t keys_mapping_i;
 } controller_local_private;
 
-static key_mapping keys_mappings[][4] = {
+// TO-DO initialize keys mapping dynamically, it would give user capability to
+// define it's own key bindings, without need of recompilation
+static key_mapping keys_mappings[keys_mappings_limit][4] = {
     {
         {.user_value = UP, .string = "w"},
         {.user_value = DOWN, .string = "s"},
@@ -37,10 +41,8 @@ static key_mapping keys_mappings[][4] = {
 static stream_proxy_ptr create_stdin_proxy(void);
 
 controller_ptr init_controller_local(controller_ptr controller) {
-  static size_t counter = 0;
-
   // Do not allow more controllers then there are configured key bindings.
-  if (counter > sizeof(keys_mappings) / sizeof(key_mapping))
+  if (counter >= keys_mappings_limit)
     return NULL;
 
   stream_proxy_ptr stdin_proxy = create_stdin_proxy();
@@ -58,7 +60,7 @@ controller_ptr init_controller_local(controller_ptr controller) {
   counter++;
 
   set_controller_type(controller, CONTROLLER_LOCAL);
-  set_controller_private(controller, &private);
+  set_controller_private(controller, private);
 
   return controller;
 }
