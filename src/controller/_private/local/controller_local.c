@@ -2,12 +2,13 @@
 #include "../../controller_type.h"
 #include "../../user_value.h"
 #include "../controller_private.h"
-#include "controller.h"
 #include "stream_proxy.h"
 
 #include <stddef.h>
 #include <stdio.h>
 #include <stdlib.h>
+
+static stream_proxy_ptr stream_proxy = NULL;
 
 typedef struct {
   user_value_t user_value;
@@ -16,7 +17,7 @@ typedef struct {
 
 typedef struct {
   stream_proxy_ptr stdin_proxy;
-  size_t i;
+  size_t keys_mapping_i;
 } controller_local_private;
 
 static key_mapping keys_mappings[][4] = {
@@ -33,21 +34,26 @@ static key_mapping keys_mappings[][4] = {
         {.user_value = RIGHT, .string = "6"},
     },
 };
-static stream_proxy_ptr get_stdin_proxy(void);
+static stream_proxy_ptr create_stdin_proxy(void);
 
 controller_ptr init_controller_local(controller_ptr controller) {
   static size_t counter = 0;
 
   // Do not allow more controllers then there are configured key bindings.
-  if (counter >
-      sizeof(keys_mappings) / (sizeof(keys_mappings[0]) / sizeof(key_mapping)))
+  if (counter > sizeof(keys_mappings) / sizeof(key_mapping))
     return NULL;
 
-  stream_proxy_ptr stdin_proxy = get_stdin_proxy();
+  stream_proxy_ptr stdin_proxy = create_stdin_proxy();
   if (!stdin_proxy)
     return NULL;
 
-  controller_local_private private = {.i = counter, .stdin_proxy = stdin_proxy};
+  controller_local_private *private =
+      app_malloc(sizeof(controller_local_private));
+  if (!private)
+    return NULL;
+
+  private->stdin_proxy = stdin_proxy;
+  private->keys_mapping_i = counter;
 
   counter++;
 
@@ -58,27 +64,33 @@ controller_ptr init_controller_local(controller_ptr controller) {
 }
 
 void destroy_controller_local(controller_ptr controller) {
+  controller_local_private *private = get_controller_private(controller);
+
   app_free(controller);
-  destroy_stream_proxy(get_stdin_proxy());
+  app_free(private);
+  destroy_stream_proxy(stream_proxy);
+
+  stream_proxy = NULL;
 }
 
 char *read_controller_local(controller_ptr controller) {
-  stream_proxy_ptr stream_proxy = get_controller_private(controller);
-  char buffer[get_length_proxy(stream_proxy)];
+  controller_local_private *private = get_controller_private(controller);
+  stream_proxy_ptr stdin_proxy = private->stdin_proxy;
+
+  char buffer[get_length_proxy(stdin_proxy)];
   char *received;
 
-  received = read_stream_proxy(stream_proxy, buffer);
+  received = read_stream_proxy(stdin_proxy, buffer);
   if (!received)
     return NULL;
+
+  // TO-DO translate buffer values to keys
 }
-controller_ptr flush_controller_local(controller_ptr controller) {}
+/* controller_ptr flush_controller_local(controller_ptr controller) {} */
 
-stream_proxy_ptr get_stdin_proxy(void) {
-  // Kindo singleton pattern
-  static stream_proxy_ptr stream_proxy = NULL;
+stream_proxy_ptr create_stdin_proxy(void) {
+  if (!stream_proxy)
+    stream_proxy = create_stream_proxy(stdin);
 
-  if (stream_proxy)
-    return stream_proxy;
-
-  return create_stream_proxy(stdin);
+  return stream_proxy;
 }

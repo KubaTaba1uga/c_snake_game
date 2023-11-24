@@ -32,16 +32,16 @@ controller_ptr create_controller(controller_type_t type) {
 
 void destroy_controller(controller_ptr controller) { app_free(controller); }
 
-controller_type_t _get_controller_type(controller_ptr controller) {
+controller_type_t get_controller_type(controller_ptr controller) {
   return controller->type;
 }
-void _set_controller_type(controller_ptr controller, controller_type_t type) {
+void set_controller_type(controller_ptr controller, controller_type_t type) {
   controller->type = type;
 }
 
-void *_get_controller_private(controller_ptr controller) {
+void *get_controller_private(controller_ptr controller) {
   return controller->private;
 }
-void _set_controller_private(controller_ptr controller, void *private) {
+void set_controller_private(controller_ptr controller, void *private) {
   controller->private = private;
 };
