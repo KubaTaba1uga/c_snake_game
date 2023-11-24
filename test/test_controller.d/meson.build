@@ -27,3 +27,28 @@ test_stream_proxy_exe = executable('test_stream_proxy',
 )
 
 test('test_stream_proxy', test_stream_proxy_exe)
+
+##################################
+# TEST LOCAL CONTROLLER
+##################################
+test_local_controller_file = files('test_controller_local.c')
+
+test_local_controller_exe = executable('test_local_controller',
+  sources: [
+    test_local_controller_file,
+    std_lib_mock,
+    cmock_gen_runner.process(test_local_controller_file),
+  ],
+  include_directories: app_src_dirs,
+  dependencies: controller_tests_deps,
+  link_with: [
+    controller_module,
+    test_utils_module,
+  ],
+  link_args: [
+    # allow static functions testing
+    '-zmuldefs',
+  ],
+)
+
+test('test_local_controller', test_local_controller_exe)

@@ -64,7 +64,6 @@ controller_ptr create_local_controller_mock(void) {
 }
 
 void destroy_local_controller_mock(controller_ptr controller_mock) {
-  void *private = get_controller_private(controller_mock);
-  free(private);
+  free(controller_mock->private);
   free(controller_mock);
 }

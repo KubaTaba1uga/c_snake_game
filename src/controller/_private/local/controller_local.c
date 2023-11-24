@@ -73,19 +73,19 @@ void destroy_controller_local(controller_ptr controller) {
   stream_proxy = NULL;
 }
 
-char *read_controller_local(controller_ptr controller) {
-  controller_local_private *private = get_controller_private(controller);
-  stream_proxy_ptr stdin_proxy = private->stdin_proxy;
+/* char *read_controller_local(controller_ptr controller) { */
+/*   controller_local_private *private = get_controller_private(controller); */
+/*   stream_proxy_ptr stdin_proxy = private->stdin_proxy; */
 
-  char buffer[get_length_proxy(stdin_proxy)];
-  char *received;
+/*   char buffer[get_length_proxy(stdin_proxy)]; */
+/*   char *received; */
 
-  received = read_stream_proxy(stdin_proxy, buffer);
-  if (!received)
-    return NULL;
+/*   received = read_stream_proxy(stdin_proxy, buffer); */
+/*   if (!received) */
+/*     return NULL; */
 
-  // TO-DO translate buffer values to keys
-}
+/*   // TO-DO translate buffer values to keys */
+/* } */
 /* controller_ptr flush_controller_local(controller_ptr controller) {} */
 
 stream_proxy_ptr create_stdin_proxy(void) {
