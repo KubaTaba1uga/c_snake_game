@@ -7,6 +7,7 @@
 #include "stream_proxy.h"
 
 #include <errno.h>
+#include <stdbool.h>
 #include <stddef.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -32,8 +33,7 @@ static key_mapping **keys_mappings = NULL;
 // define it's own key bindings, without need of recompilation
 
 static stream_proxy_ptr create_stdin_proxy(void);
-static user_value_t convert_mapping_to_user_value(key_mapping a_mapping,
-                                                  char *string);
+static bool is_mapping_user_value(key_mapping a_mapping, char *string);
 
 key_mapping **create_key_mappings(void) {
   // User should be able to define it's own key bindings,
@@ -57,19 +57,34 @@ key_mapping **create_key_mappings(void) {
           {.user_value = RIGHT, .string = "6"},
       },
   };
-  size_t default_mappings_amount =
-      sizeof(default_keys_mappings) / sizeof(default_keys_mappings[0]);
+  size_t default_mappings_amount, per_mapping_keys, i, j;
 
-  keys_mappings = malloc(sizeof(default_keys_mappings));
+  default_mappings_amount =
+      sizeof(default_keys_mappings) / sizeof(default_keys_mappings[0]);
+  per_mapping_keys = sizeof(default_keys_mappings[0]) / sizeof(key_mapping);
+
+  keys_mappings = malloc(default_mappings_amount * sizeof(key_mapping *));
+
   if (!keys_mappings) {
     errno = ERROR_OOM;
     return NULL;
   }
 
-  keys_mappings_limit = default_mappings_amount;
-  keys_mapped_amount = sizeof(default_keys_mappings[0]) / sizeof(key_mapping);
+  for (i = 0; i < default_mappings_amount; i++) {
+    keys_mappings[i] = malloc(per_mapping_keys * sizeof(key_mapping));
 
-  memcpy(keys_mappings, default_keys_mappings, sizeof(default_keys_mappings));
+    if (!keys_mappings[i]) {
+      errno = ERROR_OOM;
+      return NULL;
+    }
+
+    for (j = 0; j < per_mapping_keys; j++) {
+      keys_mappings[i][j] = default_keys_mappings[i][j];
+    }
+  }
+
+  keys_mappings_limit = default_mappings_amount;
+  keys_mapped_amount = per_mapping_keys;
 
   return keys_mappings;
 }
@@ -123,9 +138,7 @@ user_value_t read_controller_local(controller_ptr controller) {
 
   char *received;
   size_t k, i;
-  user_value_t tmp, user_value = ENUM_INVALID;
-
-  flush_stream_proxy(stdin_proxy);
+  user_value_t user_value = ENUM_INVALID;
 
   char buffer[get_length_proxy(stdin_proxy)];
 
@@ -135,25 +148,22 @@ user_value_t read_controller_local(controller_ptr controller) {
 
   keys_mapping = keys_mappings[private->keys_mapping_i];
 
-  // Error is here, propably copying from default mapping is fucked
   for (k = 0; k < get_length_proxy(stdin_proxy); k++) {
     for (i = 0; i < keys_mapped_amount; i++) {
       a_mapping = keys_mapping[i];
 
-      tmp = convert_mapping_to_user_value(a_mapping, received + k);
-
-      if (tmp != ENUM_INVALID) {
-        user_value = tmp;
+      if (is_mapping_user_value(a_mapping, received + k)) {
+        printf("MAtch: %s\n", received + k);
+        user_value = a_mapping.user_value;
         break;
-      }
+      };
     }
   };
 
   return user_value;
 }
 
-user_value_t convert_mapping_to_user_value(key_mapping a_mapping,
-                                           char *string) {
+bool is_mapping_user_value(key_mapping a_mapping, char *string) {
   size_t mapping_value_len;
   size_t user_value_len;
 
@@ -161,12 +171,9 @@ user_value_t convert_mapping_to_user_value(key_mapping a_mapping,
   user_value_len = strlen(string);
 
   if (mapping_value_len > user_value_len)
-    return ENUM_INVALID;
+    return false;
 
-  if (!strncmp(a_mapping.string, string, mapping_value_len))
-    return ENUM_INVALID;
-
-  return a_mapping.user_value;
+  return strncmp(a_mapping.string, string, mapping_value_len);
 }
 /* controller_ptr flush_controller_local(controller_ptr controller) {} */
 

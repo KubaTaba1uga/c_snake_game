@@ -78,7 +78,7 @@ char *read_stream_proxy(stream_proxy_ptr stream_proxy, char buffer[]) {
 // Substitute data with new data
 stream_proxy_ptr flush_stream_proxy(stream_proxy_ptr stream_proxy) {
   void *recived;
-  char c;
+  char c = 0;
   chr_error err;
 
   if (stream_proxy->not_read && !stream_proxy->not_flushed)
@@ -91,7 +91,11 @@ stream_proxy_ptr flush_stream_proxy(stream_proxy_ptr stream_proxy) {
     goto ERROR;
   }
 
-  while ((c = fgetc(stream_proxy->stream)) != EOF) {
+  while (c != EOF) {
+    putchar(c);
+
+    c = fgetc(stream_proxy->stream);
+
     err = chr_append(stream_proxy->data, c);
 
     if (err) {

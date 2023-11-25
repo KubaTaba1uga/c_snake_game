@@ -13,7 +13,7 @@
 #include <unistd.h>
 
 const char user_input[] = {'W', 'W', 'W', 'W', 'W', 'S',
-                           'A', 'D', 'S', 'S', 'S'};
+                           'A', 'D', 'S', 'S', 's'};
 stream_proxy_ptr stream_proxy_mock;
 controller_local_private *private_mock;
 controller_ptr local_controller_mock;
@@ -36,9 +36,9 @@ void setUp() {
   for (i = 0; i < sizeof(user_input) / sizeof(char); i++) {
     fputc(user_input[i], tmp_file);
   }
-  fseek(tmp_file, 0, SEEK_SET);
+  rewind(tmp_file);
 
-  create_key_mappings();
+  keys_mappings = create_key_mappings();
 }
 
 void tearDown() {
@@ -104,6 +104,7 @@ void test_read_controller_local_success(void) {
   controller_ptr controller;
   controller_local_private *private;
   user_value_t received;
+  void *no_err;
 
   app_malloc_ExpectAndReturn(controller_expected_size, local_controller_mock);
   controller = create_controller(CONTROLLER_LOCAL);
@@ -118,6 +119,8 @@ void test_read_controller_local_success(void) {
   TEST_ASSERT_NULL(private);
 
   stream_proxy = create_stream_proxy(tmp_file);
+  no_err = flush_stream_proxy(stream_proxy);
+  TEST_ASSERT_NOT_NULL(no_err);
 
   controller = init_controller_local(controller);
   TEST_ASSERT_NOT_NULL(controller);
