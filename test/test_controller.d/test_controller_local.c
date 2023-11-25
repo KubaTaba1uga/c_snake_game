@@ -2,6 +2,7 @@
 #include "controller/_private/local/controller_local.c"
 #include "controller/controller.h"
 #include "controller/controller_type.h"
+#include "controller/user_value.h"
 #include "mock_std_lib_interface.h"
 #include "unity.h"
 #include <chr_list.h>
@@ -97,4 +98,31 @@ void test_create_controller_local_multiple_counter() {
     TEST_ASSERT_NOT_NULL(private);
     TEST_ASSERT_EQUAL(i, private->keys_mapping_i);
   }
+}
+
+void test_read_controller_local_success(void) {
+  controller_ptr controller;
+  controller_local_private *private;
+  user_value_t received;
+
+  app_malloc_ExpectAndReturn(controller_expected_size, local_controller_mock);
+  controller = create_controller(CONTROLLER_LOCAL);
+
+  TEST_ASSERT_NOT_NULL(controller);
+
+  app_malloc_ExpectAndReturn(stream_proxy_expect_size, stream_proxy_mock);
+  app_malloc_ExpectAndReturn(local_controller_private_expected_size,
+                             private_mock);
+
+  private = (controller_local_private *)get_controller_private(controller);
+  TEST_ASSERT_NULL(private);
+
+  stream_proxy = create_stream_proxy(tmp_file);
+
+  controller = init_controller_local(controller);
+  TEST_ASSERT_NOT_NULL(controller);
+
+  received = read_controller_local(controller);
+
+  TEST_ASSERT_EQUAL(DOWN, received);
 }

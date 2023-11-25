@@ -21,6 +21,7 @@ struct stream_proxy {
   // Not read is required to disallow proxy users
   //  flushing not read data. It would lead to traces.
   bool not_read;
+  bool not_flushed;
 };
 
 stream_proxy_ptr create_stream_proxy(FILE *stream) {
@@ -36,6 +37,7 @@ stream_proxy_ptr create_stream_proxy(FILE *stream) {
   proxy->stream = stream;
   proxy->data = NULL;
   proxy->not_read = true;
+  proxy->not_flushed = true;
 
   return proxy;
 }
@@ -56,6 +58,11 @@ size_t get_length_proxy(stream_proxy_ptr stream_proxy) {
 char *read_stream_proxy(stream_proxy_ptr stream_proxy, char buffer[]) {
   chr_error err;
 
+  if (stream_proxy->not_flushed) {
+    // TO-DO log error
+    return NULL;
+  }
+
   err = chr_slice(stream_proxy->data, 0, chr_length(stream_proxy->data) - 1,
                   buffer);
   if (err) {
@@ -74,7 +81,7 @@ stream_proxy_ptr flush_stream_proxy(stream_proxy_ptr stream_proxy) {
   char c;
   chr_error err;
 
-  if (stream_proxy->not_read)
+  if (stream_proxy->not_read && !stream_proxy->not_flushed)
     return stream_proxy;
 
   recived = reset_stream_data(stream_proxy);
@@ -94,6 +101,7 @@ stream_proxy_ptr flush_stream_proxy(stream_proxy_ptr stream_proxy) {
   }
 
   stream_proxy->not_read = true;
+  stream_proxy->not_flushed = false;
 
   return stream_proxy;
 
