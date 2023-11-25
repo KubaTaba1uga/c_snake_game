@@ -91,10 +91,16 @@ stream_proxy_ptr flush_stream_proxy(stream_proxy_ptr stream_proxy) {
     goto ERROR;
   }
 
+  puts("Reading from tmpfile");
   while (c != EOF) {
-    putchar(c);
 
     c = fgetc(stream_proxy->stream);
+
+    // Bad code!!
+    if (c == EOF)
+      break;
+
+    putchar(c);
 
     err = chr_append(stream_proxy->data, c);
 
@@ -103,6 +109,7 @@ stream_proxy_ptr flush_stream_proxy(stream_proxy_ptr stream_proxy) {
       goto ERROR;
     }
   }
+  puts("\nRead from tmpfile");
 
   stream_proxy->not_read = true;
   stream_proxy->not_flushed = false;
