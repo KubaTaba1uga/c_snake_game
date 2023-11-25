@@ -29,7 +29,10 @@ void setUp() {
   fseek(tmp_file, 0, SEEK_SET);
 }
 
-void tearDown() { destroy_stream_proxy_mock(stream_proxy_mock); }
+void tearDown() {
+  destroy_stream_proxy_mock(stream_proxy_mock);
+  fclose(tmp_file);
+}
 
 void test_create_stream_proxy_success(void) {
   stream_proxy_ptr stream_proxy;
@@ -53,6 +56,8 @@ void test_flush_stream_data_success(void) {
   stream_proxy = create_stream_proxy(tmp_file);
 
   TEST_ASSERT_NULL(stream_proxy->data);
+
+  stream_proxy->not_read = false;
 
   stream_proxy = flush_stream_proxy(stream_proxy);
 
@@ -78,9 +83,12 @@ void test_read_stream_data_success(void) {
 
   TEST_ASSERT_NULL(stream_proxy->data);
 
+  stream_proxy->not_read = false;
+
   stream_proxy = flush_stream_proxy(stream_proxy);
 
   TEST_ASSERT_NOT_NULL(stream_proxy);
+  TEST_ASSERT_NOT_NULL(stream_proxy->data);
 
   char buffer[chr_length(stream_proxy->data)];
 

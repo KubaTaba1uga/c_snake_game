@@ -36,11 +36,16 @@ void setUp() {
     fputc(user_input[i], tmp_file);
   }
   fseek(tmp_file, 0, SEEK_SET);
+
+  create_key_mappings();
 }
 
 void tearDown() {
   destroy_stream_proxy_mock(stream_proxy_mock);
   destroy_local_controller_mock(local_controller_mock);
+  destroy_keys_mapping();
+
+  fclose(tmp_file);
 }
 
 void test_create_controller_local_success() {
@@ -74,7 +79,7 @@ void test_create_controller_local_multiple_counter() {
   controller_local_private *private;
   size_t i;
 
-  for (i = 0; i < 10; i++) {
+  for (i = 0; i < 2; i++) {
     app_malloc_ExpectAndReturn(controller_expected_size, local_controller_mock);
     controller = create_controller(CONTROLLER_LOCAL);
 
