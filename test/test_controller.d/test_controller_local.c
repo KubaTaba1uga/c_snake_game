@@ -145,7 +145,7 @@ void test_read_controller_local_success_default_0(void) {
 }
 
 void test_read_controller_local_default_1(void) {
-  const char user_input[] = {'k', 'S', 'j', 'r', '8', '9', 'x'};
+  const char user_input[] = {'z', '4', '2', '8', 'z', 'z'};
 
   FILE *file;
   controller_ptr controller;

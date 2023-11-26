@@ -42,6 +42,10 @@ key_mapping **create_key_mappings(void) {
   // User can define 20 bindings, if two player are playing
   //   only first two are used.
   // TO-DO custom key bindings
+  static const char arrow_up[] = {'\033', '[', 'A', 0};
+  static const char arrow_down[] = {'\033', '[', 'B', 0};
+  static const char arrow_right[] = {'\033', '[', 'C', 0};
+  static const char arrow_left[] = {'\033', '[', 'D', 0};
 
   key_mapping default_keys_mappings[][4] = {
       {
@@ -56,6 +60,13 @@ key_mapping **create_key_mappings(void) {
           {.user_value = LEFT, .string = "4"},
           {.user_value = RIGHT, .string = "6"},
       },
+      {
+          {.user_value = UP, .string = arrow_up},
+          {.user_value = DOWN, .string = arrow_down},
+          {.user_value = LEFT, .string = arrow_left},
+          {.user_value = RIGHT, .string = arrow_right},
+      },
+
   };
   size_t default_mappings_amount, per_mapping_keys, i, j;
 
