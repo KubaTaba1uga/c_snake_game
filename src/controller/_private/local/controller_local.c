@@ -1,6 +1,7 @@
 #include "../../../interfaces/std_lib_interface.h"
 #include "../../../proj_config/constant.h"
 #include "../../../proj_config/error.h"
+#include "../../../utils/logging_utils.h"
 #include "../../controller_type.h"
 #include "../../user_value.h"
 #include "../controller_private.h"
@@ -23,6 +24,7 @@ typedef struct {
   size_t keys_mapping_i;
 } controller_local_private;
 
+static const char file_id[] = "controller_local";
 static stream_proxy_ptr stream_proxy = NULL;
 static size_t counter = 0;
 static size_t keys_mappings_limit = 0;
@@ -144,14 +146,22 @@ void destroy_keys_mapping(void) {
 
 user_value_t read_controller_local(controller_ptr controller) {
   controller_local_private *private = get_controller_private(controller);
-  stream_proxy_ptr stdin_proxy = private->stdin_proxy;
-  key_mapping *keys_mapping, a_mapping;
 
+  stream_proxy_ptr stdin_proxy;
+  key_mapping *keys_mapping, a_mapping;
   char *received;
   size_t k, i;
-  user_value_t user_value = ENUM_INVALID;
+  user_value_t user_value;
+
+  stdin_proxy = private->stdin_proxy;
+  if (!private) {
+    log_error((char *)file_id,
+              "No private, controller need to initialized before usage");
+    return ENUM_INVALID;
+  }
 
   char buffer[get_length_proxy(stdin_proxy)];
+  user_value = ENUM_INVALID;
 
   received = read_stream_proxy(stdin_proxy, buffer);
   if (!received)

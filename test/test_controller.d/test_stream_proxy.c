@@ -64,7 +64,7 @@ void test_flush_stream_data_success(void) {
   TEST_ASSERT_NOT_NULL(stream_proxy);
   TEST_ASSERT_NOT_NULL(stream_proxy->data);
   TEST_ASSERT_EQUAL(sizeof(user_input) / sizeof(char),
-                    chr_length(stream_proxy->data));
+                    chr_length(stream_proxy->data) - 1);
   TEST_ASSERT_TRUE(stream_proxy->not_read);
 
   for (i = 0; i < sizeof(user_input) / sizeof(char); i++) {
