@@ -153,20 +153,20 @@ user_value_t read_controller_local(controller_ptr controller) {
   size_t k, i;
   user_value_t user_value;
 
-  stdin_proxy = private->stdin_proxy;
   if (!private) {
     log_error((char *)file_id,
-              "No private, controller need to initialized before usage");
+              "No private, controller needs to be initialized before usage");
     return ENUM_INVALID;
   }
 
+  stdin_proxy = private->stdin_proxy;
   char buffer[get_length_proxy(stdin_proxy)];
-  user_value = ENUM_INVALID;
 
   received = read_stream_proxy(stdin_proxy, buffer);
   if (!received)
     return ENUM_INVALID;
 
+  user_value = ENUM_INVALID;
   keys_mapping = keys_mappings[private->keys_mapping_i];
 
   for (k = 0; k < get_length_proxy(stdin_proxy); k++) {
@@ -176,9 +176,9 @@ user_value_t read_controller_local(controller_ptr controller) {
       if (is_mapping_user_value(a_mapping, received + k)) {
         user_value = a_mapping.user_value;
         break;
-      };
+      }
     }
-  };
+  }
 
   return user_value;
 }
@@ -195,7 +195,26 @@ bool is_mapping_user_value(key_mapping a_mapping, char *string) {
 
   return !strncmp(a_mapping.string, string, mapping_value_len);
 }
-/* controller_ptr flush_controller_local(controller_ptr controller) {} */
+
+controller_ptr flush_controller_local(controller_ptr controller) {
+  controller_local_private *private = get_controller_private(controller);
+  stream_proxy_ptr stdin_proxy;
+  void *received;
+
+  if (!private) {
+    log_error((char *)file_id,
+              "No private, controller needs to be initialized before usage");
+    return NULL;
+  }
+
+  stdin_proxy = private->stdin_proxy;
+  received = (void *)flush_stream_proxy(stdin_proxy);
+
+  if (!received)
+    return NULL;
+
+  return controller;
+}
 
 stream_proxy_ptr create_stdin_proxy(void) {
   if (!stream_proxy)
