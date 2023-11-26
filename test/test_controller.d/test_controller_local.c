@@ -110,12 +110,13 @@ void test_create_controller_local_multiple_counter() {
   }
 }
 
-void test_read_controller_local_success(void) {
+void test_read_controller_local_success_default_0(void) {
   controller_ptr controller;
   controller_local_private *private;
   user_value_t received;
   void *no_err;
 
+  /* Test prep */
   app_malloc_ExpectAndReturn(controller_expected_size, local_controller_mock);
   controller = create_controller(CONTROLLER_LOCAL);
 
@@ -128,16 +129,57 @@ void test_read_controller_local_success(void) {
   private = (controller_local_private *)get_controller_private(controller);
   TEST_ASSERT_NULL(private);
 
+  // Add stream to proxy
   stream_proxy = create_stream_proxy(tmp_file);
+  // Load data from stream to proxy
   no_err = flush_stream_proxy(stream_proxy);
   TEST_ASSERT_TRUE(no_err);
 
   controller = init_controller_local(controller);
   TEST_ASSERT_NOT_NULL(controller);
 
+  /* Test logic */
   received = read_controller_local(controller);
 
   TEST_ASSERT_EQUAL(DOWN, received);
+}
+
+void test_read_controller_local_default_1(void) {
+  const char user_input[] = {'k', 'S', 'j', 'r', '8', '9', 'x'};
+
+  FILE *file;
+  controller_ptr controller;
+  user_value_t received;
+  void *no_err;
+
+  /* Test prep */
+  app_malloc_ExpectAndReturn(controller_expected_size, local_controller_mock);
+  controller = create_controller(CONTROLLER_LOCAL);
+
+  TEST_ASSERT_NOT_NULL(controller);
+
+  app_malloc_ExpectAndReturn(stream_proxy_expect_size, stream_proxy_mock);
+  app_malloc_ExpectAndReturn(local_controller_private_expected_size,
+                             private_mock);
+
+  // Write user input to stream
+  file = create_tmpfile(sizeof(user_input) / sizeof(char), (char *)user_input);
+  // Add stream to proxy
+  stream_proxy = create_stream_proxy(file);
+  // Load data from stream to proxy
+  no_err = flush_stream_proxy(stream_proxy);
+  fclose(file);
+
+  TEST_ASSERT_TRUE(no_err);
+
+  counter = 1;
+  controller = init_controller_local(controller);
+  TEST_ASSERT_NOT_NULL(controller);
+
+  /* Test logic */
+  received = read_controller_local(controller);
+
+  TEST_ASSERT_EQUAL(UP, received);
 }
 
 void test_read_controller_local_success_no_mapped_keys(void) {
@@ -148,6 +190,7 @@ void test_read_controller_local_success_no_mapped_keys(void) {
   user_value_t received;
   void *no_err;
 
+  /* Test prep */
   app_malloc_ExpectAndReturn(controller_expected_size, local_controller_mock);
   controller = create_controller(CONTROLLER_LOCAL);
 
@@ -157,15 +200,20 @@ void test_read_controller_local_success_no_mapped_keys(void) {
   app_malloc_ExpectAndReturn(local_controller_private_expected_size,
                              private_mock);
 
+  // Write user input to stream
   file = create_tmpfile(sizeof(user_input) / sizeof(char), (char *)user_input);
+  // Add stream to proxy
   stream_proxy = create_stream_proxy(file);
+  // Load data from stream to proxy
   no_err = flush_stream_proxy(stream_proxy);
   fclose(file);
+
   TEST_ASSERT_TRUE(no_err);
 
   controller = init_controller_local(controller);
   TEST_ASSERT_NOT_NULL(controller);
 
+  /* Test logic */
   received = read_controller_local(controller);
 
   TEST_ASSERT_EQUAL(ENUM_INVALID, received);
