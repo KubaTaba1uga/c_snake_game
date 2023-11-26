@@ -153,7 +153,6 @@ user_value_t read_controller_local(controller_ptr controller) {
       a_mapping = keys_mapping[i];
 
       if (is_mapping_user_value(a_mapping, received + k)) {
-        printf("MAtch: %s\n", received + k);
         user_value = a_mapping.user_value;
         break;
       };
@@ -170,10 +169,13 @@ bool is_mapping_user_value(key_mapping a_mapping, char *string) {
   mapping_value_len = strlen(a_mapping.string);
   user_value_len = strlen(string);
 
+  printf("User value: %s %s\n", string,
+         strncmp(a_mapping.string, string, 1) ? "true" : "false");
+
   if (mapping_value_len > user_value_len)
     return false;
 
-  return strncmp(a_mapping.string, string, mapping_value_len);
+  return !strncmp(a_mapping.string, string, mapping_value_len);
 }
 /* controller_ptr flush_controller_local(controller_ptr controller) {} */
 

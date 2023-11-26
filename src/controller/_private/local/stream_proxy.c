@@ -63,6 +63,15 @@ char *read_stream_proxy(stream_proxy_ptr stream_proxy, char buffer[]) {
     return NULL;
   }
 
+  printf("Length: %lu\n", chr_length(stream_proxy->data));
+  for (size_t i = 0; i < chr_length(stream_proxy->data); i++) {
+    char c;
+
+    chr_get(stream_proxy->data, i, &c);
+
+    printf("%c\n", c);
+  }
+
   err = chr_slice(stream_proxy->data, 0, chr_length(stream_proxy->data) - 1,
                   buffer);
   if (err) {
