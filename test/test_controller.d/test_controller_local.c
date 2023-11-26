@@ -4,6 +4,7 @@
 #include "controller/controller_type.h"
 #include "controller/user_value.h"
 #include "mock_std_lib_interface.h"
+#include "proj_config/constant.h"
 #include "unity.h"
 #include <chr_list.h>
 #include <stdbool.h>
@@ -19,8 +20,23 @@ controller_local_private *private_mock;
 controller_ptr local_controller_mock;
 FILE *tmp_file;
 
-void setUp() {
+FILE *create_tmpfile(size_t n, char values[n]) {
+  FILE *file;
   size_t i;
+
+  file = tmpfile();
+  if (!file)
+    TEST_FAIL_MESSAGE("Unable to open temporary file");
+
+  for (i = 0; i < n; i++) {
+    fputc(values[i], file);
+  }
+  rewind(file);
+
+  return file;
+}
+
+void setUp() {
 
   stream_proxy = NULL;
   counter = 0;
@@ -29,14 +45,8 @@ void setUp() {
   local_controller_mock = create_local_controller_mock();
   private_mock = get_controller_private(local_controller_mock);
 
-  tmp_file = tmpfile();
-  if (!tmp_file)
-    TEST_FAIL_MESSAGE("Unable to open temporary file");
-
-  for (i = 0; i < sizeof(user_input) / sizeof(char); i++) {
-    fputc(user_input[i], tmp_file);
-  }
-  rewind(tmp_file);
+  tmp_file =
+      create_tmpfile(sizeof(user_input) / sizeof(char), (char *)user_input);
 
   keys_mappings = create_key_mappings();
 }
@@ -120,7 +130,7 @@ void test_read_controller_local_success(void) {
 
   stream_proxy = create_stream_proxy(tmp_file);
   no_err = flush_stream_proxy(stream_proxy);
-  TEST_ASSERT_NOT_NULL(no_err);
+  TEST_ASSERT_TRUE(no_err);
 
   controller = init_controller_local(controller);
   TEST_ASSERT_NOT_NULL(controller);
@@ -128,4 +138,35 @@ void test_read_controller_local_success(void) {
   received = read_controller_local(controller);
 
   TEST_ASSERT_EQUAL(DOWN, received);
+}
+
+void test_read_controller_local_success_no_mapped_keys(void) {
+  const char user_input[] = {'k', 'S', 'j', 'r', '8', '9', 'x'};
+
+  FILE *file;
+  controller_ptr controller;
+  user_value_t received;
+  void *no_err;
+
+  app_malloc_ExpectAndReturn(controller_expected_size, local_controller_mock);
+  controller = create_controller(CONTROLLER_LOCAL);
+
+  TEST_ASSERT_NOT_NULL(controller);
+
+  app_malloc_ExpectAndReturn(stream_proxy_expect_size, stream_proxy_mock);
+  app_malloc_ExpectAndReturn(local_controller_private_expected_size,
+                             private_mock);
+
+  file = create_tmpfile(sizeof(user_input) / sizeof(char), (char *)user_input);
+  stream_proxy = create_stream_proxy(file);
+  no_err = flush_stream_proxy(stream_proxy);
+  fclose(file);
+  TEST_ASSERT_TRUE(no_err);
+
+  controller = init_controller_local(controller);
+  TEST_ASSERT_NOT_NULL(controller);
+
+  received = read_controller_local(controller);
+
+  TEST_ASSERT_EQUAL(ENUM_INVALID, received);
 }

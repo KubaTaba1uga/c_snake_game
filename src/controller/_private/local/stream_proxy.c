@@ -21,6 +21,8 @@ struct stream_proxy {
   // Not read is required to disallow proxy users
   //  flushing not read data. It would lead to traces.
   bool not_read;
+  // Not flushed is required to disallow proxy users
+  //  reading not flushed data. It would lead to undefined behaviours.
   bool not_flushed;
 };
 
@@ -63,15 +65,6 @@ char *read_stream_proxy(stream_proxy_ptr stream_proxy, char buffer[]) {
     return NULL;
   }
 
-  printf("Length: %lu\n", chr_length(stream_proxy->data));
-  for (size_t i = 0; i < chr_length(stream_proxy->data); i++) {
-    char c;
-
-    chr_get(stream_proxy->data, i, &c);
-
-    printf("%c\n", c);
-  }
-
   err = chr_slice(stream_proxy->data, 0, chr_length(stream_proxy->data) - 1,
                   buffer);
   if (err) {
@@ -100,16 +93,9 @@ stream_proxy_ptr flush_stream_proxy(stream_proxy_ptr stream_proxy) {
     goto ERROR;
   }
 
-  puts("Reading from tmpfile");
   while (c != EOF) {
 
     c = fgetc(stream_proxy->stream);
-
-    // Bad code!!
-    if (c == EOF)
-      break;
-
-    putchar(c);
 
     err = chr_append(stream_proxy->data, c);
 
@@ -118,7 +104,6 @@ stream_proxy_ptr flush_stream_proxy(stream_proxy_ptr stream_proxy) {
       goto ERROR;
     }
   }
-  puts("\nRead from tmpfile");
 
   stream_proxy->not_read = true;
   stream_proxy->not_flushed = false;

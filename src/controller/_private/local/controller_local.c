@@ -169,9 +169,6 @@ bool is_mapping_user_value(key_mapping a_mapping, char *string) {
   mapping_value_len = strlen(a_mapping.string);
   user_value_len = strlen(string);
 
-  printf("User value: %s %s\n", string,
-         strncmp(a_mapping.string, string, 1) ? "true" : "false");
-
   if (mapping_value_len > user_value_len)
     return false;
 
